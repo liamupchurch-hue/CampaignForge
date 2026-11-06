@@ -1,13 +1,13 @@
 # Changelog
 
-## Unreleased — SDXL workflow preset and ComfyUI integration foundations
+## v1.1.0-beta.1 — ComfyUI local Art Studio test build (2026-11-06)
 
-- Add **Find models folder** and **Where is it in Comfy Desktop?** controls for ComfyUI checkpoint selection. Recognizes common newer/older Windows shared-model folders, with manual selection for custom locations.
-- Clarify that the selected path is a `checkpoints` **folder**, not an individual model file, and that Campaign Forge's image generation integration with ComfyUI is not yet implemented.
-- Added the seven-node, API-format SDXL Base workflow preset from a successful real ComfyUI Desktop test (with a generic example prompt instead of the owner's map prompt). The preset uses only core ComfyUI nodes.
-- Added `comfy_bridge.py` for safe preset customization and opt-in, localhost-only ComfyUI connectivity, checkpoint listing and prompt submission. **Not yet connected to Campaign Forge's UI**; no live API or Windows executable integration test yet.
-- Added adapter regression tests with mocked ComfyUI responses. Initial local source test suite: 102 tests plus 7 subtests passed; newest GitHub CI is still to be verified.
-- Folder discovery instructions and updated dialog still need verification on Windows.
+- Added a **Generate Image (ComfyUI)** button inside Cartography, opening a dedicated Art Studio with positive/negative prompts, four starter presets, image size, steps, CFG and seed settings.
+- Uses the verified seven-node SDXL Base 1.0 workflow supplied by the owner; it submits to a running **local** ComfyUI instance only after user approval. Detects local ports 8188/8000 or accepts another explicit loopback port. No AI model or cloud API is required.
+- Polls the ComfyUI job, retrieves an output image, previews it, saves a PNG or copies it to campaign Archives. A map-background link is optional and requires confirmation.
+- Added Comfy Desktop checkpoints folder help, tests and the project's approved CF crest as a Windows application icon.
+- Local tests: 118 passed + 1 GUI test skipped without a display; with virtual display: 119 passed, including mocked ComfyUI generation / Archives import. **Actual ComfyUI Windows GPU/API integration still needs testing.**
+- The new release is Python **source code** plus build scripts. No precompiled/signed Windows binary, models, Ollama, ComfyUI or API keys are bundled. No third-party binary distribution audit is claimed.
 
 ## v1.0.0 — First GitHub community beta (source package)
 

@@ -20,25 +20,18 @@ MODEL_SIZE_GB = 6.94
 
 
 def candidate_checkpoint_dirs(home=None, localappdata=None, appdata=None):
-    """Existing ComfyUI checkpoint folders, not guessed model installations.
-
-    Supports current Comfy Desktop shared storage, older Desktop installs,
-    and the classic Documents/ComfyUI layout. Custom drives are supported by
-    the manual picker; we deliberately do not crawl users' disks.
-    """
+    """Find existing common ComfyUI folders without scanning entire drives."""
     home = Path(home) if home is not None else Path.home()
     local = Path(localappdata) if localappdata is not None else Path(os.environ.get('LOCALAPPDATA') or home / 'AppData' / 'Local')
     roaming = Path(appdata) if appdata is not None else Path(os.environ.get('APPDATA') or home / 'AppData' / 'Roaming')
-    model_roots = [
-        local / 'Comfy-Desktop' / 'ComfyUI-Shared' / 'models',
-        home / 'ComfyUI-Shared' / 'models',
-        home / 'Documents' / 'ComfyUI' / 'models',
-        roaming / 'ComfyUI' / 'models',
-    ]
-    results = []
+    roots = [local/'Comfy-Desktop'/'ComfyUI-Shared'/'models',
+             home/'ComfyUI-Shared'/'models',
+             home/'Documents'/'ComfyUI'/'models',
+             roaming/'ComfyUI'/'models']
+    found = []
     seen = set()
-    for root in model_roots:
-        checkpoint = root / 'checkpoints'
+    for root in roots:
+        checkpoint = root/'checkpoints'
         try:
             if not checkpoint.is_dir():
                 continue
@@ -47,23 +40,23 @@ def candidate_checkpoint_dirs(home=None, localappdata=None, appdata=None):
             continue
         key = str(resolved).casefold()
         if key not in seen:
-            results.append(resolved)
             seen.add(key)
-    return results
+            found.append(resolved)
+    return found
 
 
 def checkpoints_help_text():
     return (
         'Comfy Desktop: open Settings > Storage > Shared Models, then click the folder icon '
         'beside the PRIMARY models directory. Open its checkpoints subfolder and choose it here.\n\n'
-        'Windows default often used by newer Comfy Desktop:\n'
+        'Possible Windows default:\n'
         '%LOCALAPPDATA%\\Comfy-Desktop\\ComfyUI-Shared\\models\\checkpoints\n\n'
-        'Older installs may use %USERPROFILE%\\ComfyUI-Shared\\models\\checkpoints, '
-        'and portable ComfyUI stores checkpoints inside its own ComfyUI\\models folder. '
-        'If ComfyUI uses a custom drive/folder, choose it manually.\n\n'
-        'Choose a FOLDER named checkpoints, not an individual .safetensors file. '
-        'Only download SDXL if you want that additional model; if it is already installing, let it finish. '
-        'Campaign Forge currently downloads models but does not send generation jobs to ComfyUI.'
+        'Older installs may use %USERPROFILE%\\ComfyUI-Shared\\models\\checkpoints. '
+        'For portable ComfyUI use ComfyUI\\models\\checkpoints. '
+        'For a custom installation, choose your existing checkpoints folder manually.\n\n'
+        'Select the FOLDER, not an individual model file. '
+        'The new Generate Image button in Cartography connects to the running ComfyUI server. '
+        'This setup screen only downloads optional SDXL Base weights; it does not start jobs.'
     )
 
 
@@ -79,7 +72,7 @@ def download_checkpoint(destination, notify, stopped, opener=None):
         raise ValueError('An existing model file failed verification. Move or rename it before downloading.')
     existing=temporary.stat().st_size if temporary.exists() else 0
     request=urllib.request.Request(MODEL_URL,headers={
-        'User-Agent':'CampaignForge/1.0.0 (optional-model-download)',
+        'User-Agent':'CampaignForge/1.1.0-beta.1 (optional-model-download)',
         **({'Range':f'bytes={existing}-'} if existing else {})})
     opener=opener or urllib.request.build_opener()
     with opener.open(request,timeout=60) as response:
@@ -122,15 +115,16 @@ def open_image_setup(parent):
     ttk.Label(content,text='Set up local image generation',style='Section.TLabel').pack(anchor='w',pady=(0,6))
     text=('ComfyUI is a separate, free local image-generation application for Windows. '
           'Campaign Forge can download an official SDXL Base 1.0 checkpoint (~6.94 GB) '
-          'into the ComfyUI checkpoints folder you choose. Model generation currently runs in ComfyUI; '
-          'direct in-app image generation is not part of this release. No download starts without your approval.')
+          'into the ComfyUI checkpoints folder you choose. To generate an image in Campaign Forge, '
+          'use Cartography > Generate Image with a RUNNING local ComfyUI instance. '
+          'No download starts without your approval.')
     ttk.Label(content,text=text,style='Muted.TLabel',wraplength=690,justify='left').pack(anchor='w',pady=(0,12))
     links=ttk.Frame(content);links.pack(fill='x',pady=5)
     ttk.Button(links,text='1. Install ComfyUI (official website)',command=lambda:webbrowser.open(COMFY_DOWNLOAD)).pack(side='left')
     ttk.Button(links,text='Model card and license',command=lambda:webbrowser.open(MODEL_PAGE)).pack(side='left',padx=8)
     ttk.Label(content,text='License: CreativeML Open RAIL++-M. Review the model license before use.',style='Muted.TLabel').pack(anchor='w',pady=6)
     selection=ttk.Frame(content);selection.pack(fill='x',pady=8)
-    ttk.Label(selection,text='2. ComfyUI models/checkpoints folder (folder, not a model file):').pack(anchor='w',pady=(0,5))
+    ttk.Label(selection,text='2. ComfyUI models/checkpoints folder (not a model file):').pack(anchor='w',pady=(0,5))
     path=tk.StringVar(value='')
     ttk.Entry(selection,textvariable=path,state='readonly').pack(side='left',fill='x',expand=True)
     ttk.Button(selection,text='Choose folder…',command=lambda:path.set(filedialog.askdirectory(parent=dlg,title='Choose your ComfyUI models/checkpoints folder') or path.get())).pack(side='right',padx=6)
@@ -139,10 +133,9 @@ def open_image_setup(parent):
         matches=candidate_checkpoint_dirs()
         if len(matches)==1:
             path.set(str(matches[0]))
-            messagebox.showinfo('ComfyUI models folder',f'Found a checkpoint folder:\n{matches[0]}\n\nConfirm this is the folder used by your active ComfyUI installation.',parent=dlg)
+            messagebox.showinfo('ComfyUI models folder',f'Found a folder:\n{matches[0]}\n\nVerify it is used by your active instance.',parent=dlg)
         elif len(matches)>1:
-            # Never silently pick the wrong installation when more than one exists.
-            messagebox.showinfo('Multiple folders found','Found these checkpoint directories:\n\n'+ '\n'.join(str(p) for p in matches) + '\n\nUse Choose folder… to select the one listed in Comfy Desktop > Settings > Storage.',parent=dlg)
+            messagebox.showinfo('Multiple folders found','ComfyUI checkpoint directories:\n\n'+ '\n'.join(map(str,matches)) + '\n\nChoose the active one using Choose folder…',parent=dlg)
         else:
             messagebox.showinfo('Models folder not detected',checkpoints_help_text(),parent=dlg)
     ttk.Button(finder,text='Find models folder',command=find_models).pack(side='left')

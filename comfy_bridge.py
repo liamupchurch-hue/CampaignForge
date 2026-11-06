@@ -121,3 +121,74 @@ class ComfyLocalClient:
         if not isinstance(result, dict):
             raise ValueError('ComfyUI returned invalid job history.')
         return result
+
+    def image_output(self, prompt_id: str) -> dict | None:
+        """Return the first Save Image output if finished; None while pending.
+
+        Raise on a reported execution failure, rather than polling indefinitely.
+        """
+        records = self.history(prompt_id)
+        job = records.get(prompt_id)
+        if not job:
+            return None
+        if not isinstance(job, dict):
+            raise ValueError('ComfyUI returned invalid job details.')
+        status = job.get('status', {})
+        if isinstance(status, dict):
+            if status.get('status_str') in ('error', 'failed'):
+                messages = status.get('messages') or []
+                details = ''
+                for item in messages:
+                    if isinstance(item, (list, tuple)) and item and item[0] == 'execution_error':
+                        if isinstance(item[-1], dict):
+                            details = str(item[-1].get('exception_message') or '')[:350]
+                        break
+                raise RuntimeError('ComfyUI could not generate the image.' + (f' {details}' if details else ' Check the ComfyUI queue for details.'))
+        outputs = job.get('outputs', {})
+        if not isinstance(outputs, dict):
+            raise ValueError('ComfyUI returned malformed output data.')
+        images = (outputs.get('7') or {}).get('images', [])
+        if images and isinstance(images, list) and isinstance(images[0], dict):
+            return images[0]
+        if isinstance(status, dict) and status.get('completed'):
+            raise RuntimeError('ComfyUI marked the job finished but returned no image. Inspect its workflow and errors.')
+        return None
+
+    def download_image(self, output: dict, *, max_bytes: int = 25_000_000) -> bytes:
+        """Read only a generated image from ComfyUI's output directory."""
+        if not isinstance(output, dict):
+            raise ValueError('Image descriptor is missing.')
+        filename = output.get('filename')
+        subfolder = output.get('subfolder') or ''
+        if (not isinstance(filename, str) or len(filename) > 200 or
+                not filename.lower().endswith(('.png', '.jpg', '.jpeg', '.webp')) or
+                filename in ('.', '..') or '/' in filename or '\\' in filename or '\x00' in filename):
+            raise ValueError('ComfyUI returned an invalid image filename.')
+        if not isinstance(subfolder, str) or len(subfolder) > 200:
+            raise ValueError('ComfyUI returned an invalid image subfolder.')
+        segments = subfolder.replace('\\', '/').split('/') if subfolder else []
+        if any(part in ('.', '..', '') or ':' in part or '\x00' in part for part in segments):
+            raise ValueError('ComfyUI returned an unsafe image subfolder.')
+        if output.get('type', 'output') != 'output':
+            raise ValueError('Only completed images in ComfyUI output are supported.')
+        query = parse.urlencode({'filename': filename, 'subfolder': subfolder, 'type': 'output'})
+        req = request.Request(self.base_url + '/view?' + query)
+        with self._opener.open(req, timeout=30) as response:
+            data = response.read(max_bytes + 1)
+        if not data or len(data) > max_bytes:
+            raise ValueError('ComfyUI image output is missing or too large.')
+        return data
+
+
+def find_local_comfy(*, ports=(8188, 8000), opener=None):
+    """Try typical local Comfy ports; do not scan networks or remote hosts."""
+    last_error = None
+    for port in ports:
+        try:
+            client = ComfyLocalClient(f'http://127.0.0.1:{port}', opener=opener)
+            client.system_stats()
+            return client
+        except (OSError, ValueError, TimeoutError) as exc:
+            last_error = exc
+    raise ConnectionError('Could not connect to local ComfyUI on ports ' + ', '.join(map(str, ports)) +
+                          '. Start your ComfyUI instance, or enter its localhost URL manually.') from last_error

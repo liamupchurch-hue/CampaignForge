@@ -1,17 +1,17 @@
-CAMPAIGN FORGE 1.0.0 — PUBLIC COMMUNITY BETA
+Campaign Forge v1.1.0-beta.1 — LOCAL COMFYUI ART STUDIO TEST BUILD
 
-THIS IS AN EXPERIMENTAL PYTHON APPLICATION, NOT A SIGNED EXE.
-BACK UP YOUR FILES. AI IS OPTIONAL. THIRD-PARTY APIS MAY BILL YOU.
+1. Extract this ZIP to a separate folder and back up your campaign JSON + Archives.
+2. Double-click start_windows.bat (Windows; Python 3.11+ required for source launch).
+3. Start Comfy Desktop separately. Confirm your SDXL Base 1.0 checkpoint is installed.
+4. Open Cartography > Generate Image (ComfyUI) in Campaign Forge.
+5. It will try local ports 8188 or 8000. Click Find / Connect and select the checkpoint.
+6. Enter positive and negative prompts; Generate Image; approve the local request.
+7. Preview the image, Save PNG or Add to The Archives.
 
-WINDOWS SETUP
-1. Install Python 3.11+ with the py launcher from python.org.
-2. Extract the Campaign Forge source ZIP outside Program Files.
-3. Run start_windows.bat and review the beta notice.
-4. Save a new .campaign.json before making major changes.
-5. Back up Archives separately. Keep old versions and saves.
+This is SOURCE CODE, not a prebuilt Windows exe. For your OWN test executable,
+run build_windows.bat after start_windows.bat and keep all files inside
+dist\CampaignForge together. Do not redistribute binary before license/security audit.
+No models, ComfyUI, GPU drivers, or cloud API keys are included.
+Actual live Windows ComfyUI testing remains pending.
 
-REPORT BUGS OR IDEAS
-https://github.com/liamupchurch-hue/CampaignForge/issues
-Do not upload API keys, private campaign material, or personal paths.
-
-See README.md, BETA_DISCLAIMER.md, API_AND_DATA_NOTICE.md, and LICENSE.
+More: README.md, KNOWN_ISSUES.md, BETA_DISCLAIMER.md, API_AND_DATA_NOTICE.md.

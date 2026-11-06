@@ -37,10 +37,11 @@ from forge_library import Archive
 from forge_book import suggest_outline
 from oracle_grounding import gather_sources, is_attribution_question
 from image_setup import open_image_setup
+from comfy_studio import open_comfy_studio
 from project_actions import project_outline_context, action_instructions, normalize_plan, apply_actions, summarize_actions
 from archive_vision import describe_image, match_requested_image
 
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.1.0-beta.1"
 
 # Studio Dark: contemporary writing tools, with subtle dungeon/brass accents.
 BG = '#121B25'
@@ -62,6 +63,11 @@ class CampaignForge(ForgeEnhancements, tk.Tk):
         self.minsize(1110, 740)
         self.title(f"Campaign Forge v{APP_VERSION} — The Archivist's Studio")
         self.configure(bg=BG)
+        try:
+            if sys.platform == 'win32':
+                self.iconbitmap(str(self.asset_path('CampaignForge.ico')))
+        except (OSError, tk.TclError):
+            pass  # Keep the main editor usable even if an icon cannot be loaded.
         self.data = new_campaign()
         self.archive = Archive()
         self.current_character_id = None
@@ -300,7 +306,7 @@ class CampaignForge(ForgeEnhancements, tk.Tk):
             ("Chronicles", "Create and edit chapters, NPCs, locations, quests, encounters and other story entries. Select an entry on the left, edit its content on the right, and choose Save entry changes. Mark DM-only material to exclude it from a player-facing PDF."),
             ("The Archives", "Add documents to your computer-based library. You can store documents for the current campaign or share them across campaigns. Supported files include PDFs, Word files, text, images, and JSON. The library is not uploaded to a server. Scanned PDFs and pictures are stored but do not become searchable text.\n\nTo let The Oracle consult documents, enable the Archives source checkbox in Creative Consultation. Cloud requests require separate approval for reference excerpts. Export library backup makes a ZIP of all locally archived files."),
             ("Roster & Bestiary", "Create NPCs, creatures and encounters. Check Combat character to enable structured statistic fields; leave unknown figures blank. Noncombat characters print biography information only. Use Read PDF / image character sheet to extract labeled fields from selectable-text PDFs. For scans and photos, the app can ask a locally installed vision-capable Ollama model, then show a review dialog before saving. JSON import and Chronicle NPC copying remain available. Encounter Builder links existing characters without duplicating their records. All AI-derived combat statistics require verification."),
-            ("Cartography", "Create a grid map, import a background image, and paint terrain on top. Imported images are copied into The Archives. Choose a prop such as a crate, barrel, tree or marker; click Place / drag props, then click or drag on the map. Right-click a prop to remove it. Export a high-resolution PNG; D&D Beyond uploads remain manual. Images from The Archives need to travel with an Archives backup when moving to another computer."),
+            ("Cartography", "Create a grid map, import a background image, and paint terrain on top. Imported images are copied into The Archives. Choose a prop such as a crate, barrel, tree or marker; click Place / drag props, then click or drag on the map. Right-click a prop to remove it. Export a high-resolution PNG; D&D Beyond uploads remain manual. Generate Image (ComfyUI) opens a local Art Studio with positive/negative prompts, model choice, preview and opt-in Archives import. ComfyUI and an SDXL model must be installed separately. This does not call a cloud API. Images from The Archives need to travel with an Archives backup when moving to another computer."),
             ("The Oracle — Import", "Open The Oracle, then Import an Existing Campaign. Choose a text-based PDF or DOCX. You will first see offline suggestions. Select entries to include, review their source text, and choose Add selected to campaign. You must confirm before any content changes.\n\nIf you enable Local Oracle, Organize with selected Oracle analyzes your manuscript in passages. The app retries malformed AI responses. Unreadable passages are kept in Needs Review, not lost. Always verify AI suggestions against your manuscript. The imported project is not saved until you choose Save."),
             ("The Oracle — Creative Consultation", "The Scribe works offline without AI. To connect AI on your PC, open The Oracle > Creative Consultation > The Local Oracle, install Ollama, download a model, then use Check status. Local requests use your PC and may take several minutes.\n\nFor cloud AI, select The Greater Oracle and follow the API-key setup. API usage may incur charges and sends approved material to OpenAI. Campaign Forge does not use your ChatGPT password.\n\nUse Hide setup choices to give the conversation more room, or Show setup choices to change Oracle modes. Clear destination makes new questions general rather than linked to a field.\n\nEvery question and response appears in a scrollable transcript. Click a response heading to select that reply. Use Copy selected reply for clean text, Export transcript (.txt) to save it, or Apply selected to field to compare and append or replace a field. Merge & refine asks the Oracle for a combined draft; it never changes the field automatically. Undo field change restores previous text.\n\nOracle conversations live only in the running application. When closing, choose to export a text file or discard the session. You can disable repeated request notices with Don't show this notice again."),
             ("Bind the Tome", "Use The Book Architect to select a D&D, Pathfinder, world guide or custom outline. Rearrange sections and entries before publishing. Click Preview book to inspect the final PDF pages inside the application without creating a permanent downloaded file; select a section and choose Preview selected section / entry for a shorter proof. Suggest original manuscript order uses matching headings from an Archives document and asks before changing the order. Review every proposed scene order manually. Save the editable project separately from the final PDF."),
@@ -476,6 +482,8 @@ class CampaignForge(ForgeEnhancements, tk.Tk):
         ttk.Button(left,text='Import map background',command=self.import_map_background).pack(fill='x',pady=(11,4))
         ttk.Button(left,text='Remove background',command=self.remove_map_background).pack(fill='x',pady=4)
         ttk.Button(left,text='AI image model setup',command=lambda:open_image_setup(self)).pack(fill='x',pady=4)
+        ttk.Button(left, text='Generate Image (ComfyUI)', command=lambda:open_comfy_studio(self),
+                   style='Accent.TButton').pack(fill='x', pady=(5, 7))
         ttk.Button(left, text="Export PNG", command=self.export_map_png,
                    style="Accent.TButton").pack(fill="x", pady=(13, 6))
 

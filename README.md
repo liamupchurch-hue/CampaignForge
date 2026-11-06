@@ -1,4 +1,27 @@
-# Campaign Forge v1.0.0 — Public Community Beta
+# Campaign Forge v1.1.0-beta.1 — Local Art Studio Test Build
+
+> **EXPERIMENTAL SOURCE TEST BUILD — NOT A PUBLICLY AUDITED WINDOWS RELEASE.** Back up campaigns and Archives before testing. The original v1.0.0 source beta and its historical release notes are retained below. There is no ready-built Windows .exe in this ZIP; build a local exe using the Windows script if desired.
+
+## NEW: ComfyUI AI Art Studio (v1.1.0-beta.1)
+
+This test build introduces a **Generate Image (ComfyUI)** button inside **Cartography**. It opens a separate Art Studio with positive and negative prompt fields, four starter art types, model dropdown, image sizes, seed/steps/CFG, preview, PNG export and optional **Add to The Archives**. Map backgrounds are changed **only after you approve**.
+
+**Quick local test:**
+
+1. Download/extract this ZIP as a **new** folder; do not overwrite your working v1.0.0 installation.
+2. On Windows, run `start_windows.bat` to install the existing Python dependencies locally and launch Campaign Forge, or run `build_windows.bat` after setup to build your own `dist\CampaignForge\CampaignForge.exe` executable (copy the whole folder).
+3. Independently open **Comfy Desktop** and start your instance with the **SDXL Base 1.0** checkpoint already installed. ComfyUI, model files and GPU drivers are **not bundled**.
+4. In Campaign Forge open **Cartography → Generate Image (ComfyUI)**. It checks **localhost ports 8188 and 8000**; if needed manually enter another local URL such as `http://127.0.0.1:8188` and click **Find / Connect**.
+5. Confirm the `sd_xl_base_1.0.safetensors` checkpoint appears, enter a positive and negative prompt, choose **Generate Image**, approve the local GPU job, review the preview, then optionally save as PNG or copy to The Archives.
+6. If you selected a map and generated a **Map background**, Campaign Forge can link the image to the map after a second approval. Save the campaign JSON separately. Archives copies must be included in backups.
+
+**Limitations:** Live API execution on the owner's Windows installation remains **unverified**; a simulated ComfyUI endpoint and GUI have been tested. The Art Studio does not install or manage ComfyUI, provide cloud generation, use custom nodes, import a full instance, or guarantee accurate maps/text. Clicking **Stop waiting** does not cancel a queued ComfyUI GPU task. First generation may take several minutes and can fail when VRAM is insufficient. Only an explicitly configured **local** HTTP endpoint is accepted. See [KNOWN_ISSUES.md](KNOWN_ISSUES.md) and [Issue #1](https://github.com/liamupchurch-hue/CampaignForge/issues/1).
+
+**Standalone Windows packages** remain unpublished pending third-party binary licensing review, security checks and a clean Windows test; unsigned file warnings may occur.
+
+---
+
+## Original v1.0.0 public beta background
 
 > **EXPERIMENTAL SOFTWARE — BACK UP YOUR FILES.** Campaign Forge is a Windows-first Python desktop prototype for writing and organizing tabletop role-playing campaigns, characters, maps, encounters and books. The `1.0.0` label identifies the first public community-testing package, **not a stable or security-audited commercial product**. Crashes, incorrect AI outputs, data loss and broken exports are possible.
 >
@@ -60,7 +83,7 @@ Choose a prop; click on the map to select it. **Prop size** sets the footprint (
 
 ### Optional image-model download: ComfyUI + SDXL Base
 
-Open **Cartography → AI image model setup** (also offered under **The Oracle → Creative Consultation → Local Oracle**) for guided setup. The window opens the official ComfyUI installer site and license page, and can **download the official SDXL Base 1.0 checkpoint (~6.94 GB)** into the *ComfyUI/models/checkpoints* folder that you choose. It supports partial downloads, shows progress and verifies SHA-256 before completing. Check model license and available disk space and bandwidth first. ComfyUI is separate software; actual image generation takes place there in v1.0.0. **Campaign Forge does not yet generate an image directly inside Cartography**, and none of the multi-gigabyte model files are bundled. This installer was not live-tested against the full 6.94 GB download on Windows.
+Open **Cartography → AI image model setup** (also offered under **The Oracle → Creative Consultation → Local Oracle**) for guided setup. The window opens the official ComfyUI installer site and license page, and can **download the official SDXL Base 1.0 checkpoint (~6.94 GB)** into the *ComfyUI/models/checkpoints* folder that you choose. It supports partial downloads, shows progress and verifies SHA-256 before completing. Check model license and available disk space and bandwidth first. ComfyUI is separate software; v1.1.0-beta.1 adds a local Art Studio Generate button in Cartography, but still requires ComfyUI running independently. None of the multi-gigabyte model files are bundled. This installer was not live-tested against the full 6.94 GB download on Windows.
 
 ## Known limitations that remain
 
@@ -69,7 +92,7 @@ Open **Cartography → AI image model setup** (also offered under **The Oracle �
 - Archived image understanding and scanned character extraction require a compatible image-capable Ollama model and may misread text or map symbols.
 - No one-click error-diagnostic ZIP yet; we intentionally deferred that idea.
 - Full images from manuscript DOCX files are not always preserved in a published campaign PDF. Keep the original source and Archives backup.
-- High-quality in-app AI art generation is **not** included yet; ComfyUI with optional SDXL is an external tool.
+- Local in-app SDXL image generation is now included as an experimental interface to external ComfyUI (not bundled); it still needs a live Windows user test.
 
 ## Previous v0.7.0 features (still available)
 
