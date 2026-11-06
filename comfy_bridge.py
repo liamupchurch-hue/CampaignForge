@@ -160,6 +160,58 @@ class ComfyLocalClient:
         vaes = self.model_names('vae')
         return list_model_choices(checkpoints, diffusion, text_encoders, vaes)
 
+    def verify_selected_model(self, selected: ModelChoice, graph: dict) -> None:
+        """Fail closed when the exact selected model is no longer installed.
+
+        Model and companion-file availability comes from the running ComfyUI
+        server immediately before GPU work, never from a stale UI selection.
+        """
+        if not isinstance(selected, ModelChoice) or not selected.ready:
+            raise ValueError('The selected model is not ready. Check model status and choose an installed model.')
+        if not isinstance(graph, dict):
+            raise ValueError('Cannot verify the requested model in an invalid workflow.')
+        if selected.family in ('sdxl', 'standard'):
+            loader = graph.get('15') or {}
+            if loader.get('class_type') != 'CheckpointLoaderSimple' or loader.get('inputs', {}).get('ckpt_name') != selected.filename:
+                raise ValueError('Workflow model does not match the selected checkpoint. Generation stopped.')
+        elif selected.family in ('zimage', 'flux_schnell', 'flux_dev'):
+            loader = graph.get('18') or {}
+            if loader.get('class_type') != 'UNETLoader' or loader.get('inputs', {}).get('unet_name') != selected.filename:
+                raise ValueError('Workflow model does not match the selected diffusion model. Generation stopped.')
+            clip = graph.get('15') or {}
+            if selected.family == 'zimage':
+                encoder_ok = (clip.get('class_type') == 'CLIPLoader' and
+                              clip.get('inputs', {}).get('clip_name') == selected.text_encoder)
+            else:
+                encoder_ok = (clip.get('class_type') == 'DualCLIPLoader' and
+                              clip.get('inputs', {}).get('clip_name1') == selected.text_encoder and
+                              clip.get('inputs', {}).get('clip_name2') == selected.second_encoder)
+            vae = graph.get('17') or {}
+            vae_ok = vae.get('class_type') == 'VAELoader' and vae.get('inputs', {}).get('vae_name') == selected.vae
+            if not encoder_ok or not vae_ok:
+                raise ValueError('Workflow companion files do not match the selected model. Generation stopped.')
+        else:
+            raise ValueError('Unsupported image model family; no workflow was queued.')
+
+        current = self.available_models()
+        installed = next((model for model in current if model.family == selected.family and model.filename == selected.filename), None)
+        if installed is None:
+            raise ValueError(f'Selected model "{selected.filename}" is not installed in the active ComfyUI instance. '
+                             'Generation stopped; no other model was substituted. '
+                             'Use Check model status and select an installed model.')
+        if not installed.ready:
+            raise ValueError(f'Selected model "{selected.filename}" is missing required files: ' +
+                             ', '.join(installed.missing) + '. Generation stopped.')
+        if ((installed.text_encoder, installed.second_encoder, installed.vae) !=
+                (selected.text_encoder, selected.second_encoder, selected.vae)):
+            raise ValueError('Required model files have changed since connecting. '
+                             'Generation stopped. Check model status to refresh the list.')
+
+    def submit_checked(self, graph: dict, selected: ModelChoice) -> str:
+        """Queue only after a fresh exact-model check; no fallback permitted."""
+        self.verify_selected_model(selected, graph)
+        return self.submit(graph)
+
     def submit(self, graph: dict) -> str:
         """Queue an explicitly requested workflow, returning the new prompt ID."""
         if not isinstance(graph, dict) or not graph:
