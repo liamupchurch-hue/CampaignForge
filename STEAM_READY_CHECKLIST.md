@@ -104,6 +104,7 @@ This is the **living master checklist** for readiness to distribute Campaign For
 
 ## Change log for this checklist
 
+- **2026-11-06 (beta.4):** Owner reported model-selection fallback: choosing an unavailable model could generate with a different model. Development branch [PR #2](https://github.com/liamupchurch-hue/CampaignForge/pull/2) now rechecks the exact selected ComfyUI model before generating, clears missing selections on reconnect, and disallows silent substitution. Source test package: 153 local tests and 7 subtests passed. **Actual Windows/GPU beta.4 validation pending; public v1.0.0 unchanged.**
 - **2026-11-06:** ComfyUI Art Studio SDXL live generation passed on owner's Windows PC. Development v1.1.0-beta.3 adds experimental FLUX.1 and Z-Image Turbo workflows and model-family quality presets; live tests of these new families remain pending.
 - **2026-11-06 (development build):** GitHub feature branch `feature/comfy-art-studio-v1.1.0-beta.1` contains new Art Studio UI, positive/negative prompts, localhost ComfyUI API queue/poll/image retrieval, optional Archives/map integration, and CF icon. 122 tests passed under Xvfb, GitHub Python CI passed. Live owner ComfyUI Windows test is next; main v1.0.0 release is unchanged.
 - **2026-11-06:** Received API-format `image_sdxl_simple` JSON from the working owner ComfyUI instance; committed sanitized default workflow and `comfy_bridge.py` under `assets/workflows` and repo root. Integration tests pass locally. Connecting app UI and live output retrieval is still pending.
