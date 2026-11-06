@@ -54,18 +54,21 @@ These are owner-observed outcomes, not independently reproduced Windows tests. T
 
 ## If it fails
 
-### Windows blocks the executable (reported 2026-11-06)
+### Smart App Control blocked the source build script (photo-confirmed 2026-11-06)
 
-On a second laptop, owner reports that Windows prevented the unsigned application from running before feature tests could begin. **Do not record this as a Python packaging failure or a confirmed certificate-only cause until we know the exact Windows security message.**
+The laptop screenshot identifies **Smart App Control** ("blocked a file that may be unsafe") and shows **`build_windows.bat` selected** in an extracted GitHub source folder (`CampaignForge-main`). This strongly suggests Windows blocked the downloaded **batch build script**, rather than the compiled `CampaignForge.exe`. Therefore, the first laptop test has **not yet exercised the standalone binary**.
 
-1. Copy down or capture a screenshot of the exact warning, including the title and named Windows protection (redact personal details).
-2. Check **Windows Security → App & browser control → Smart App Control settings** to record whether Smart App Control is On, Evaluation, Off, or absent. **Do not change this setting just to test Campaign Forge.**
-3. Check **Windows Security → Protection history** to see whether Defender detected/quarantined a threat, as opposed to merely warning that the publisher is unfamiliar.
-4. If the message is `Windows protected your PC`, it may be SmartScreen reputation; `Smart App Control blocked this app` is different and may prevent overrides. A signing certificate can help establish trusted publisher identity but does not guarantee immediate SmartScreen reputation. An actual malware detection needs independent investigation, not a bypass.
-5. Never advise beta testers to disable antivirus/Smart App Control, import self-signed root certificates, or turn off system protections to force an unfamiliar binary to run.
-6. For commercialization, investigate trusted code signing of **all relevant binary components**, safe distribution and reproducible builds; obey the project's $0-development budget until explicit authorization.
+**Test next without invoking a build script:**
 
-**Test status:** Laptop functionality not tested due to Windows block; prior desktop successes remain recorded. Further troubleshooting is pending the exact Windows alert.
+1. On the desktop where PyInstaller worked, open `dist\\CampaignForge`. Zip **the entire `CampaignForge` folder**, including its `CampaignForge.exe` and all supporting files.
+2. Transfer that ZIP to the laptop using your usual trusted method and extract it to an ordinary test folder.
+3. With Smart App Control still On, try running `CampaignForge.exe` **directly**, not `build_windows.bat`, `start_windows.bat` or anything in the downloaded GitHub source tree.
+4. If the executable is blocked too, capture its exact warning. This becomes a separate signed binary/reputation compatibility failure. Do not disable Smart App Control or Defender merely to proceed.
+5. If it launches, exercise the main editor, save/reopen, and PDF export, then repeat offline (with no AI services).
+
+Microsoft's published Smart App Control guidance explains it can block unrecognized code and files/scripts from the web. For later public distribution, consider properly signing shipped binaries and all executable components with an appropriately trusted publisher certificate. **Do not purchase any certificate during development without owner approval.**
+
+**Status:** Windows laptop source-script block confirmed; compiled executable test **pending**. Existing desktop successes remain valid.
 
 Keep the console window from `build_windows.bat` open and capture the **first error**, not just the last line. Report whether failure happens during the build, at executable startup, or when opening a particular feature. A `--windowed` app may hide runtime tracebacks; a diagnostic console build may be needed later.
 
