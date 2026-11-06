@@ -1,0 +1,457 @@
+{
+  "schema_version": 1,
+  "project_id": "7a4e4b8c-bcc6-43f4-adcf-dcde6263116b",
+  "roster": [
+    {
+      "id": "10c3cdbb2dce46b5b9572a8b6543efba",
+      "name": "Mara Venn",
+      "role": "NPC",
+      "bio": "An anxious cartographer who guards the city’s secrets.",
+      "traits": "Precise, reserved, cautious.",
+      "relationships": "",
+      "combat": false,
+      "gm_only": false,
+      "system": "Pathfinder 2e (Remaster)",
+      "stats": {},
+      "source": "Manual entry — unverified"
+    },
+    {
+      "id": "01665c9af1ab4e12a5718c569fb012ae",
+      "name": "Harbor Warden",
+      "role": "NPC",
+      "bio": "A watch officer sworn to protect the docks.",
+      "traits": "",
+      "relationships": "",
+      "combat": true,
+      "gm_only": false,
+      "system": "Pathfinder 2e (Remaster)",
+      "stats": {
+        "Level": "3",
+        "AC": "19",
+        "HP": "45",
+        "Speed": "25 ft",
+        "Strike": "+10",
+        "Damage": "1d8+3"
+      },
+      "source": "Illustrative draft stats only — verify before use"
+    }
+  ],
+  "encounters": [
+    {
+      "id": "e43ad5d66e8f4fc3ae8fbb929acf46d9",
+      "title": "A Lantern at the Pier",
+      "description": "The party can talk past the watch or confront the Harbor Warden.",
+      "gm_only": true,
+      "combatants": [
+        {
+          "character_id": "01665c9af1ab4e12a5718c569fb012ae",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "book_outline": {
+    "template": "Pathfinder Adventure",
+    "sections": [
+      {
+        "id": "1e5ffbb131894e098c574be5abf65973",
+        "title": "Adventure Overview",
+        "nodes": [
+          {
+            "type": "overview",
+            "id": "overview"
+          }
+        ]
+      },
+      {
+        "id": "5ea56a0a8bf84762a4b0f2ea4a31cdc4",
+        "title": "Player Guide",
+        "nodes": []
+      },
+      {
+        "id": "27819326325349928947f30481149bfd",
+        "title": "Setting & DM Background",
+        "nodes": [
+          {
+            "type": "entry",
+            "id": "66de6f79-a91a-4a03-99d5-ffd8fb45fe1f"
+          }
+        ]
+      },
+      {
+        "id": "bd8c52bf4896416a9cc9192240cc4ae0",
+        "title": "Adventure Chapters",
+        "nodes": [
+          {
+            "type": "entry",
+            "id": "ab28eb52-eec0-4c3f-bb14-5e0d1745658e"
+          },
+          {
+            "type": "entry",
+            "id": "d657b673-6fa8-4fb0-ba12-6eb0b38ac522"
+          }
+        ]
+      },
+      {
+        "id": "20b7a449a17d41ffaea765ad9d52b18b",
+        "title": "NPCs & Creatures",
+        "nodes": [
+          {
+            "type": "entry",
+            "id": "57ba35f2-c894-40f1-a21b-9c43f47c033b"
+          },
+          {
+            "type": "character",
+            "id": "10c3cdbb2dce46b5b9572a8b6543efba"
+          },
+          {
+            "type": "character",
+            "id": "01665c9af1ab4e12a5718c569fb012ae"
+          }
+        ]
+      },
+      {
+        "id": "43b8f45184e14dec83d3fc74862109fa",
+        "title": "Encounters",
+        "nodes": [
+          {
+            "type": "encounter",
+            "id": "e43ad5d66e8f4fc3ae8fbb929acf46d9"
+          }
+        ]
+      },
+      {
+        "id": "4378900de04949c6a5910e3f20fa7d7d",
+        "title": "Items & Rewards",
+        "nodes": []
+      },
+      {
+        "id": "cd130b2aad154716a80266cbc6dd126e",
+        "title": "Maps & Handouts",
+        "nodes": [
+          {
+            "type": "map",
+            "id": "4ad277ab-4788-47a3-8285-8a50844cf41b"
+          }
+        ]
+      },
+      {
+        "id": "05d3a5dee8e84080930adbf1009111e8",
+        "title": "Reference Appendix",
+        "nodes": []
+      }
+    ]
+  },
+  "book_template": "Pathfinder Adventure",
+  "title": "The Ashen Compass",
+  "author": "Example Creator",
+  "system": "Pathfinder 2e (Remaster)",
+  "levels": "1–5",
+  "tone": "Mystery and exploration",
+  "pitch": "A compass points not north, but toward what its bearer most regrets.",
+  "setting": "The coastal city of Greywake sits beside a sea that sometimes forgets its tide.",
+  "story_arc": "The party recovers a peculiar compass, follows its shifting bearing, and discovers why the lighthouse went dark.",
+  "entries": [
+    {
+      "id": "ab28eb52-eec0-4c3f-bb14-5e0d1745658e",
+      "category": "Chapter",
+      "title": "Chapter One: The Unlit Lighthouse",
+      "content": "The party arrives during the annual Lantern Festival. Every flame goes out at midnight.\n\nOpening scene: The keeper's daughter offers a reward for finding her missing father.",
+      "gm_only": false
+    },
+    {
+      "id": "57ba35f2-c894-40f1-a21b-9c43f47c033b",
+      "category": "NPC",
+      "title": "Mara Venn, Harbor Cartographer",
+      "content": "Goal: Keep her father's disappearance secret.\nMannerism: Always checks the horizon before answering.\nClue: Her maps show a coastline that should not exist.",
+      "gm_only": false
+    },
+    {
+      "id": "d657b673-6fa8-4fb0-ba12-6eb0b38ac522",
+      "category": "Encounter",
+      "title": "The Drowned Archive",
+      "content": "Location: Flooded basement beneath the lighthouse.\nThreat: Unstable walkways and an unknown guardian.\nChoice: Rescue a trapped scholar or preserve the evidence.",
+      "gm_only": false
+    },
+    {
+      "id": "66de6f79-a91a-4a03-99d5-ffd8fb45fe1f",
+      "category": "Secret",
+      "title": "The Keeper's Bargain",
+      "content": "The missing keeper once traded the town's memories for calm seas.",
+      "gm_only": true
+    }
+  ],
+  "references": [],
+  "maps": [
+    {
+      "id": "4ad277ab-4788-47a3-8285-8a50844cf41b",
+      "title": "Lighthouse Cellar",
+      "cols": 18,
+      "rows": 12,
+      "tiles": [
+        [
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "door",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "wall"
+        ],
+        [
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall"
+        ]
+      ],
+      "objects": [
+        {
+          "kind": "Crate",
+          "x": 4,
+          "y": 3
+        },
+        {
+          "kind": "Barrel",
+          "x": 8,
+          "y": 4
+        },
+        {
+          "kind": "Table",
+          "x": 9,
+          "y": 8
+        },
+        {
+          "kind": "Marker",
+          "x": 5,
+          "y": 6
+        }
+      ]
+    }
+  ]
+}

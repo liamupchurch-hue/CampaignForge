@@ -1,0 +1,17 @@
+CAMPAIGN FORGE 1.0.0 — PUBLIC COMMUNITY BETA
+
+THIS IS AN EXPERIMENTAL PYTHON APPLICATION, NOT A SIGNED EXE.
+BACK UP YOUR FILES. AI IS OPTIONAL. THIRD-PARTY APIS MAY BILL YOU.
+
+WINDOWS SETUP
+1. Install Python 3.11+ with the py launcher from python.org.
+2. Extract the Campaign Forge source ZIP outside Program Files.
+3. Run start_windows.bat and review the beta notice.
+4. Save a new .campaign.json before making major changes.
+5. Back up Archives separately. Keep old versions and saves.
+
+REPORT BUGS OR IDEAS
+https://github.com/liamupchurch-hue/CampaignForge/issues
+Do not upload API keys, private campaign material, or personal paths.
+
+See README.md, BETA_DISCLAIMER.md, API_AND_DATA_NOTICE.md, and LICENSE.

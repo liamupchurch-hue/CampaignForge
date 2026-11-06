@@ -1,0 +1,433 @@
+{
+  "schema_version": 1,
+  "project_id": "e288391a-67f1-4751-8601-4984958b78fc",
+  "roster": [
+    {
+      "id": "af7d9076f5644cd29fce896f127b3e8b",
+      "name": "Mara Venn",
+      "role": "NPC",
+      "bio": "A harbor cartographer who studies impossible coastlines.",
+      "traits": "Reserved, cautious, observant.",
+      "relationships": "",
+      "combat": false,
+      "gm_only": false,
+      "system": "System-neutral",
+      "stats": {},
+      "source": "Manual entry — unverified"
+    },
+    {
+      "id": "f15fd0fb78b54b75877b2dc00fa270a9",
+      "name": "Lantern Warden",
+      "role": "NPC",
+      "bio": "A magical construct guarding a flooded archive.",
+      "traits": "",
+      "relationships": "",
+      "combat": true,
+      "gm_only": false,
+      "system": "System-neutral",
+      "stats": {
+        "Level": "3 (demonstration)",
+        "AC": "16 (demonstration)",
+        "HP": "35 (demonstration)",
+        "Attacks": "Lantern beam (example only)"
+      },
+      "source": "Fictional demonstration — not rules-validated"
+    }
+  ],
+  "encounters": [
+    {
+      "id": "1958869795cc40aa906a0f23e7a51fa7",
+      "title": "Flooded Archive Encounter",
+      "description": "The party encounters the Lantern Warden in the dark cellar, where water rises beneath unstable platforms.",
+      "gm_only": true,
+      "combatants": [
+        {
+          "character_id": "f15fd0fb78b54b75877b2dc00fa270a9",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "book_outline": {
+    "template": "D&D Adventure",
+    "sections": [
+      {
+        "id": "a226057c2ee744e2badc273e499b53c2",
+        "title": "Adventure Overview",
+        "nodes": [
+          {
+            "type": "overview",
+            "id": "overview"
+          }
+        ]
+      },
+      {
+        "id": "676633f7fa12436aa586c167111ab125",
+        "title": "Player Guide",
+        "nodes": []
+      },
+      {
+        "id": "c82fcc6376324d89b1c810d8c07197e0",
+        "title": "Setting & DM Background",
+        "nodes": [
+          {
+            "type": "entry",
+            "id": "147579b8-304a-4a4a-9590-3db267c23b3b"
+          }
+        ]
+      },
+      {
+        "id": "52da6f83aa804d1e83bdf2138a2b36c5",
+        "title": "Adventure Chapters",
+        "nodes": [
+          {
+            "type": "entry",
+            "id": "5a47e3b2-b620-489a-bf63-24237054744e"
+          },
+          {
+            "type": "entry",
+            "id": "4fe64b6c-dc9c-4578-bec8-96acf299a205"
+          }
+        ]
+      },
+      {
+        "id": "367a8eb1fa874201b9e938032ef76431",
+        "title": "NPCs & Creatures",
+        "nodes": [
+          {
+            "type": "entry",
+            "id": "0b1af638-7323-4d9c-be34-030c0ad7eade"
+          },
+          {
+            "type": "character",
+            "id": "af7d9076f5644cd29fce896f127b3e8b"
+          },
+          {
+            "type": "character",
+            "id": "f15fd0fb78b54b75877b2dc00fa270a9"
+          }
+        ]
+      },
+      {
+        "id": "a99f6df1d26d4e3298f03496ecb33c3a",
+        "title": "Encounters",
+        "nodes": [
+          {
+            "type": "encounter",
+            "id": "1958869795cc40aa906a0f23e7a51fa7"
+          }
+        ]
+      },
+      {
+        "id": "674293ee4c7b4620a9032eebc677fd9d",
+        "title": "Items & Rewards",
+        "nodes": []
+      },
+      {
+        "id": "550ea2291d364769bcb0e54b2a837218",
+        "title": "Maps & Handouts",
+        "nodes": [
+          {
+            "type": "map",
+            "id": "b7db7424-fb80-44c8-92dc-dd86fe58efa6"
+          }
+        ]
+      },
+      {
+        "id": "7598e4e5e49a4e228ce790d2ec8ca4a5",
+        "title": "Reference Appendix",
+        "nodes": []
+      }
+    ]
+  },
+  "book_template": "D&D Adventure",
+  "title": "The Ashen Compass",
+  "author": "Example Creator",
+  "system": "System-neutral",
+  "levels": "1–5",
+  "tone": "Mystery and exploration",
+  "pitch": "A compass points not north, but toward what its bearer most regrets.",
+  "setting": "The coastal city of Greywake sits beside a sea that sometimes forgets its tide.",
+  "story_arc": "The party recovers a peculiar compass, follows its shifting bearing, and discovers why the lighthouse went dark.",
+  "entries": [
+    {
+      "id": "5a47e3b2-b620-489a-bf63-24237054744e",
+      "category": "Chapter",
+      "title": "Chapter One: The Unlit Lighthouse",
+      "content": "The party arrives during the annual Lantern Festival. Every flame goes out at midnight.\n\nOpening scene: The keeper's daughter offers a reward for finding her missing father.",
+      "gm_only": false
+    },
+    {
+      "id": "0b1af638-7323-4d9c-be34-030c0ad7eade",
+      "category": "NPC",
+      "title": "Mara Venn, Harbor Cartographer",
+      "content": "Goal: Keep her father's disappearance secret.\nMannerism: Always checks the horizon before answering.\nClue: Her maps show a coastline that should not exist.",
+      "gm_only": false
+    },
+    {
+      "id": "4fe64b6c-dc9c-4578-bec8-96acf299a205",
+      "category": "Encounter",
+      "title": "The Drowned Archive",
+      "content": "Location: Flooded basement beneath the lighthouse.\nThreat: Unstable walkways and an unknown guardian.\nChoice: Rescue a trapped scholar or preserve the evidence.",
+      "gm_only": false
+    },
+    {
+      "id": "147579b8-304a-4a4a-9590-3db267c23b3b",
+      "category": "Secret",
+      "title": "The Keeper's Bargain",
+      "content": "The missing keeper once traded the town's memories for calm seas.",
+      "gm_only": true
+    }
+  ],
+  "references": [],
+  "maps": [
+    {
+      "id": "b7db7424-fb80-44c8-92dc-dd86fe58efa6",
+      "title": "Lighthouse Cellar",
+      "cols": 18,
+      "rows": 12,
+      "tiles": [
+        [
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "door",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "wall"
+        ],
+        [
+          "wall",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "floor",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "water",
+          "wall"
+        ],
+        [
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall",
+          "wall"
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+name: Feature idea
+description: Suggest a small improvement or longer-term direction.
+title: "[Idea] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem should this solve?
+      placeholder: "When I prepare a session, it is difficult to..."
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Suggested behavior
+      placeholder: "A possible workflow could..."
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Feature area
+      options:
+        - Atlas / Chronicles
+        - Archives
+        - Roster / Encounters
+        - Cartography
+        - Oracle
+        - Bind the Tome / PDF
+        - Accessibility / UX
+        - Other

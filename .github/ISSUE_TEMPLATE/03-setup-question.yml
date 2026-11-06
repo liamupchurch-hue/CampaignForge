@@ -1,0 +1,16 @@
+name: Setup question
+description: Ask how to set up the preview or optional AI tools.
+title: "[Setup] "
+labels: ["question"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: What are you trying to do?
+    validations:
+      required: true
+  - type: textarea
+    id: attempts
+    attributes:
+      label: What have you tried?
+      description: Do not include API keys, billing details, or private paths.

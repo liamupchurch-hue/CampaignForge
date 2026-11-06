@@ -1,0 +1,57 @@
+name: Bug report
+description: Report a reproducible problem in Campaign Forge. Do not post secrets or private campaign text.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "**Public report:** redact API keys, paths, private documents and personal data. Back up files before testing."
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: "v1.0.0 / Windows version"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Atlas / Chronicles
+        - Archives
+        - Roster / Encounters
+        - Cartography
+        - Oracle
+        - Bind the Tome / PDF
+        - Install / Startup
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: How to reproduce
+      description: Use fictional data; do not include API keys or private manuscripts.
+      placeholder: "1. Open an example campaign..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have removed secrets and private information from this report.
+          required: true
