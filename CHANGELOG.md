@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — image setup guidance improvement
+
+- Add **Find models folder** and **Where is it in Comfy Desktop?** controls for ComfyUI checkpoint selection. Recognizes common newer/older Windows shared-model folders, with manual selection for custom locations.
+- Clarify that the selected path is a `checkpoints` **folder**, not an individual model file, and that Campaign Forge's image generation integration with ComfyUI is not yet implemented.
+- Regression tests for model-folder discovery added; 90 tests and 7 subtests passed locally. Actual upgraded Windows UI must still be checked.
+
 ## v1.0.0 — First GitHub community beta (source package)
 
 - Prepared public testing package with stable 1.0.0 version labels and GitHub issue templates.
