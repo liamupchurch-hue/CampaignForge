@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.1.0-beta.4 — exact-model safety and no fallback (2026-11-06)
+
+- Fixed the Art Studio reconnect behavior that previously substituted an available model when the selected model disappeared; with several ready models, the user must explicitly choose one.
+- Immediately before each generation job, check that the active ComfyUI instance still reports the **exact selected model, matching loader and required companion files**. If not, stop without queueing another model.
+- Show the chosen model filename in confirmation, queued/completed job status; lock model selection while a job is running.
+- Preserved SDXL Low/Medium/High quality presets. No model weights, paid services or ComfyUI instances were bundled.
+- Locally tested against mocked ComfyUI APIs and an X virtual desktop (153 tests and 7 subtests). Real Windows/GPU verification pending.
+
 ## v1.1.0-beta.3 — multi-model ComfyUI workflows (2026-11-06)
 
 - Added detection of locally installed SDXL / standard Stable Diffusion checkpoints, Z-Image Turbo diffusion models, and FLUX.1 Schnell/Dev diffusion models from the *running ComfyUI instance*. Missing text encoders or VAEs are reported before generation.
