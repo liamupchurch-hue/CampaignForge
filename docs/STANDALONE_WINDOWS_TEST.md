@@ -24,7 +24,8 @@ Produce a **one-folder Windows executable** that can be launched without a separ
 - **PASS:** Opened an existing campaign copy and previewed its book.
 - **PASS:** Exported the book to PDF.
 - **NOT TESTED:** Core editing while disconnected from the internet.
-- **NOT YET VERIFIED:** Entire `dist\\CampaignForge` folder copied to an unrelated location / clean Windows installation without Python.
+- **LAPTOP PASS (subsequent test, 2026-11-06):** Transferred correctly packaged executable launches on second Windows machine; owner confirms the same four core tests pass there.
+- **NOT YET VERIFIED:** Specifically offline operation; whether the laptop lacks Python; clean-account install; full backup/Archive handling.
 
 These are owner-observed outcomes, not independently reproduced Windows tests. They establish an initial working executable but do not yet establish independent redistribution readiness.
 
@@ -68,7 +69,7 @@ The laptop screenshot identifies **Smart App Control** ("blocked a file that may
 
 Microsoft's published Smart App Control guidance explains it can block unrecognized code and files/scripts from the web. For later public distribution, consider properly signing shipped binaries and all executable components with an appropriately trusted publisher certificate. **Do not purchase any certificate during development without owner approval.**
 
-**Status:** Windows laptop source-script block confirmed; compiled executable test **pending**. Existing desktop successes remain valid.
+**Updated status:** Windows laptop source-script block confirmed, but **properly transferred compiled executable now launches and repeats core tests successfully (owner report, 2026-11-06)**. Prior DLL error was from missing support files in onedir layout. Binary reputation/signing review is still required for general distribution.
 
 Keep the console window from `build_windows.bat` open and capture the **first error**, not just the last line. Report whether failure happens during the build, at executable startup, or when opening a particular feature. A `--windowed` app may hide runtime tracebacks; a diagnostic console build may be needed later.
 
