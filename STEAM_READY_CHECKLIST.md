@@ -49,7 +49,7 @@ This is the **living master checklist** for readiness to distribute Campaign For
 
 - [ ] **Produce a self-contained Windows build.** Customers should not need to install Python/pip or run a .bat script. Current build_windows.bat is for an unpublished PyInstaller onedir experiment, not a tested commercial installer.
 - [~] **First local build smoke test (4/5 user-reported passes, 2026-11-06).** `CampaignForge.exe` launches without the Python launcher; new campaign saves/reopens; an existing campaign previews; PDF export succeeds. **Still pending:** offline editor test, moving the entire `dist/CampaignForge` folder away from source, a clean Windows account without Python, and bundled legal notices. See [standalone test procedure](docs/STANDALONE_WINDOWS_TEST.md).
-- [ ] **Verify clean machine installation.** Test on fresh Windows 10/11 accounts, with no Python, development folders, Ollama or ComfyUI.
+- [ ] **Verify clean machine installation.** Test on fresh Windows 10/11 accounts, with no Python, development folders, Ollama or ComfyUI. **Laptop trial pending:** exe execution blocked by Windows security before functional tests could run.
 - [ ] **App startup, close, uninstall and update.** No unnecessary administrator access; proper icon and display name; user data stays outside the app installation directory and survives upgrades/uninstall as expected.
 - [ ] **Reproducible build pipeline.** Pin and hash dependencies, automate a clean build in a documented environment, generate release checksums, and archive build inputs.
 - [ ] **Windows automated CI.** Run unit/regression tests and at least one executable smoke test; continue manual GUI testing on real Windows hardware.
@@ -57,7 +57,7 @@ This is the **living master checklist** for readiness to distribute Campaign For
 - [ ] **Crash diagnostics.** Safe local logging with paths/tokens/content redacted; an opt-in issue report export; no surprise telemetry or uploads.
 - [ ] **Security assessment.** Dependency vulnerability scan, safe archive extraction/path handling, project-file input validation, network opt-in, key storage, external process boundaries, and user-controlled AI actions.
 - [ ] **Binary legal/notice audit.** Include direct + transitive licenses/attributions for Python, PDFium/pypdfium2, pypdf, ReportLab, Pillow, python-docx, packaging tool, shipped fonts/icons and native DLLs. Test actual distributed binary, not only source requirements.
-- [ ] **Evaluate Windows executable reputation/signing.** Signing is not assumed mandatory for Steam, but assess warning dialogs, publisher identity and cost/security tradeoffs; do not purchase a certificate during development without approval.
+- [~] **Evaluate Windows executable reputation/signing — laptop test BLOCKED (reported 2026-11-06).** User reports Windows refused to run the unsigned `CampaignForge.exe` on a laptop. Exact error wording and whether Smart App Control, SmartScreen, Defender threat detection, S mode, or managed App Control caused it are **not yet confirmed**. Obtain screenshot/error text and Windows Security history; determine an appropriate trusted signing/distribution strategy before any public binary release. Never instruct users to disable protections to make a commercial release work; no signing-related spending without owner approval.
 - [ ] **Windows release test plan.** Installation, upgrade, save migration, offline use, firewall, antivirus, non-admin accounts, failed download and backup recovery.
 
 ## E. Product, rights and support (P0)
@@ -101,6 +101,7 @@ This is the **living master checklist** for readiness to distribute Campaign For
 
 ## Change log for this checklist
 
+- **2026-11-06:** First laptop standalone trial could not launch because Windows blocked the unsigned app. Exact mechanism not yet diagnosed; marked signing/reputation as a priority release blocker. Desktop's earlier 4/5 smoke-test results remain valid.
 - **2026-11-06:** Owner reported first standalone exe smoke test: launch, save/reopen, preview and PDF export passed (4 of 5); offline operation not yet tested. One-folder independence and clean-machine tests remain open.
 - **2026-11-06:** Created master Steam Ready Checklist after GitHub v1.0.0 source beta release and owner confirmation of Windows PDF preview. Based on README, KNOWN_ISSUES, BUILDING, RELEASE_AUDIT_CHECKLIST and official Steamworks documentation.
 
