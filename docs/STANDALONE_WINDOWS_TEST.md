@@ -17,6 +17,26 @@ Produce a **one-folder Windows executable** that can be launched without a separ
 6. Launch `CampaignForge.exe` directly, without `start_windows.bat`. Test on a copy of your campaign.
 7. For a stronger independence test, copy the **whole** `dist\CampaignForge` folder to another location or a clean Windows machine/account without Python. Launch the executable directly. Do not assume this works until verified.
 
+## First test results reported by owner — 2026-11-06
+
+- **PASS:** `CampaignForge.exe` launched without starting the Python launcher.
+- **PASS:** Created, saved, closed, and reopened a new campaign.
+- **PASS:** Opened an existing campaign copy and previewed its book.
+- **PASS:** Exported the book to PDF.
+- **NOT TESTED:** Core editing while disconnected from the internet.
+- **NOT YET VERIFIED:** Entire `dist\\CampaignForge` folder copied to an unrelated location / clean Windows installation without Python.
+
+These are owner-observed outcomes, not independently reproduced Windows tests. They establish an initial working executable but do not yet establish independent redistribution readiness.
+
+### Next two quick checks
+
+1. **Offline test:** Save and close the app. Temporarily disconnect Wi-Fi/Ethernet, launch the .exe, open a **copy** of a campaign, edit text, save/reopen and preview/export a PDF. Do not invoke cloud APIs. Restore internet afterwards. If the app fails, record the exact step and error (redact any private paths/content).
+2. **Relocation test:** Copy the **entire** `dist\\CampaignForge` directory (including `_internal` and all supporting files) to a completely separate folder, e.g. `C:\\CF-Standalone-Test\\CampaignForge`. Launch the copied .exe directly. Create a **new test campaign** and export its PDF. Never copy only the .exe. Keep the original installation until results are confirmed.
+
+**A relocation test does not prove Python independence:** the strongest verification is a fresh Windows account/machine where Python is not installed, ideally with local AI services absent.
+
+**Data locations:** Some Campaign Forge metadata and Archives live under `%LOCALAPPDATA%\\CampaignForge`. Always back up Archives as well as .campaign.json files before reinstalling, upgrading or running stress tests. Moving the executable folder does not necessarily move all user data.
+
 ## Core smoke test (check each on the standalone executable)
 
 - [ ] Launch and close cleanly; reopen successfully.
