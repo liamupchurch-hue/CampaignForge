@@ -4,6 +4,12 @@
 >
 > **API charges and private data:** AI is optional. If you choose an external paid API, charges go to your own provider account. An OpenAI API account is separate from ChatGPT subscriptions. Cloud prompts may leave your device. Model downloads, internet bandwidth, and GPU use may have associated costs. [Read the API and data notice](API_AND_DATA_NOTICE.md), [beta risk notice](BETA_DISCLAIMER.md), and [privacy notes](PRIVACY.md).
 
+## Explore Campaign Forge
+
+New to the project? Read the [Campaign Forge introduction and project guide](docs/wiki/Home.md), [Getting Started](docs/wiki/Getting-Started.md), [Features and Vision](docs/wiki/Features-and-Vision.md), [AI and Image Generation](docs/wiki/AI-and-Image-Generation.md), and the [Roadmap](docs/wiki/Roadmap.md).
+
+These pages are **wiki-ready documentation in this repository**. They have not yet been transferred into the separate GitHub Wiki repository, so follow these links for the current content.
+
 ## Start using Campaign Forge on Windows
 
 1. Install Python **3.11 or newer** with the Windows launcher (`py`) from [python.org](https://www.python.org/downloads/windows/).
