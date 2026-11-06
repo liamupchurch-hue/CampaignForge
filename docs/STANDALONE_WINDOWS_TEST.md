@@ -54,6 +54,19 @@ These are owner-observed outcomes, not independently reproduced Windows tests. T
 
 ## If it fails
 
+### Windows blocks the executable (reported 2026-11-06)
+
+On a second laptop, owner reports that Windows prevented the unsigned application from running before feature tests could begin. **Do not record this as a Python packaging failure or a confirmed certificate-only cause until we know the exact Windows security message.**
+
+1. Copy down or capture a screenshot of the exact warning, including the title and named Windows protection (redact personal details).
+2. Check **Windows Security → App & browser control → Smart App Control settings** to record whether Smart App Control is On, Evaluation, Off, or absent. **Do not change this setting just to test Campaign Forge.**
+3. Check **Windows Security → Protection history** to see whether Defender detected/quarantined a threat, as opposed to merely warning that the publisher is unfamiliar.
+4. If the message is `Windows protected your PC`, it may be SmartScreen reputation; `Smart App Control blocked this app` is different and may prevent overrides. A signing certificate can help establish trusted publisher identity but does not guarantee immediate SmartScreen reputation. An actual malware detection needs independent investigation, not a bypass.
+5. Never advise beta testers to disable antivirus/Smart App Control, import self-signed root certificates, or turn off system protections to force an unfamiliar binary to run.
+6. For commercialization, investigate trusted code signing of **all relevant binary components**, safe distribution and reproducible builds; obey the project's $0-development budget until explicit authorization.
+
+**Test status:** Laptop functionality not tested due to Windows block; prior desktop successes remain recorded. Further troubleshooting is pending the exact Windows alert.
+
 Keep the console window from `build_windows.bat` open and capture the **first error**, not just the last line. Report whether failure happens during the build, at executable startup, or when opening a particular feature. A `--windowed` app may hide runtime tracebacks; a diagnostic console build may be needed later.
 
 For any report, include Windows version, Python version used for the build, exact steps to reproduce, and a scrubbed screenshot/error text. **Do not share API keys, personal paths, or private campaign content.**
