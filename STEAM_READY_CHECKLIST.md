@@ -39,7 +39,7 @@ This is the **living master checklist** for readiness to distribute Campaign For
 
 - [x] **No model weights, ComfyUI, Ollama, GPU drivers or API keys bundled in the source beta.**
 - [ ] **Local model discovery and capabilities.** Detect installed Ollama models and supported text/vision skills; don't claim every model supports every function.
-- [ ] **ComfyUI integration decision.** Current setup guidance exists; actual generation through ComfyUI's local execution API is not wired in. Implement and test only if we choose it as a Steam launch feature.
+- [ ] **Built-in ComfyUI image generation (requested product direction).** Plan and implement one-click local generation through a running ComfyUI instance using a **versioned, bundled SDXL workflow JSON**; users should not download/import node-graph files manually. Auto-detect service/models, preview outputs and save to Archives, Cartography, Roster or Book Architect. Keep AI optional and separate; require explicit consent for downloads/remote requests. Track work in [Issue #1](https://github.com/liamupchurch-hue/CampaignForge/issues/1). **Not yet implemented or Windows-tested.**
 - [~] **ComfyUI Desktop model folder experience.** Added source-level folder discovery and explicit Settings → Storage → Shared Models guidance (2026-11-06). Local regression tests pass. Owner should confirm the updated dialog and installed SDXL checkpoint on Windows; this does not yet create/run workflows or a ComfyUI instance.
 - [ ] **Robust AI permissions.** Never send documents, images or personal data to cloud providers without deliberate consent; no covert background calls; preview AI edits; allow disable-all-AI mode.
 - [ ] **API billing explanations.** Bring-your-own key, no auto-billing by Campaign Forge, readable usage warnings, safe key storage and redaction in diagnostics; never promise to control third-party charges.
@@ -82,6 +82,7 @@ This is the **living master checklist** for readiness to distribute Campaign For
 - [ ] **Steam timing.** For new partners/products, plan for the currently documented 30-day post-fee waiting period and at least 2 weeks with a public Coming Soon page; confirm rules when actually scheduling launch.
 - [ ] **Steam store review.** Submit accurate store content and a near-final build, plan for review and corrections before release.
 - [ ] **SteamPipe release setup.** Configure app/depots, launch options, supported OS, beta branch, install tests, updates and rollback.
+- [ ] **Pre-Steam GitHub release channel.** When the executable passes dependency/license, privacy/security, and clean-Windows packaging checks, publish each tested standalone Windows distribution as a **versioned GitHub Release** asset and keep older releases available. No fork needed; avoid distributing partial onedir files or unreviewed binaries.
 - [ ] **Final GO / NO-GO.** Steam installs/launches on clean machines, advertised features work, data stays safe, license/rights/privacy reviews complete, store materials match reality, and owner authorizes paid onboarding and release.
 
 ## G. Nice-to-have AFTER launch (P2; not blockers unless we change scope)
@@ -102,6 +103,7 @@ This is the **living master checklist** for readiness to distribute Campaign For
 
 ## Change log for this checklist
 
+- **2026-11-06:** Owner requested built-in ComfyUI workflow presets and seamless local artwork generation, plus versioned standalone builds in GitHub Releases. Documented feature scope in [Issue #1](https://github.com/liamupchurch-hue/CampaignForge/issues/1). Work remains pending; external models/ComfyUI stay optional and unbundled.
 - **2026-11-06:** Recorded ComfyUI setup usability issue and published source-level folder guidance/discovery fix; Windows confirmation and ComfyUI workflow integration remain pending.
 - **2026-11-06 (laptop retest):** With the correctly packaged executable and supporting files, user confirms launch/save-and-reopen/existing-book preview/PDF export all pass on laptop, matching desktop tests. Prior DLL failure traced to incomplete one-folder transfer. Offline and known Python-free checks remain open.
 - **2026-11-06 (laptop photo 2):** Compiled exe now starts far enough to show PyInstaller loader error about `Downloads\\_internal\\python313.dll`; exe is shown at Downloads root. Most likely deployment was incomplete (onedir `_internal` not transferred). Corrective test: retain the entire `dist\\CampaignForge` folder structure. No changes to code until retested.
