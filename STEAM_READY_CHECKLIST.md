@@ -48,7 +48,7 @@ This is the **living master checklist** for readiness to distribute Campaign For
 ## D. Windows installation and release engineering (P0)
 
 - [ ] **Produce a self-contained Windows build.** Customers should not need to install Python/pip or run a .bat script. Current build_windows.bat is for an unpublished PyInstaller onedir experiment, not a tested commercial installer.
-- [ ] **First local build smoke test (next action).** Run the existing `build_windows.bat` on Windows and complete [the standalone test procedure](docs/STANDALONE_WINDOWS_TEST.md). Do not mark complete until the generated exe launches, saves/opens, previews/exports PDFs, and runs separately from the source folder.
+- [~] **First local build smoke test (4/5 user-reported passes, 2026-11-06).** `CampaignForge.exe` launches without the Python launcher; new campaign saves/reopens; an existing campaign previews; PDF export succeeds. **Still pending:** offline editor test, moving the entire `dist/CampaignForge` folder away from source, a clean Windows account without Python, and bundled legal notices. See [standalone test procedure](docs/STANDALONE_WINDOWS_TEST.md).
 - [ ] **Verify clean machine installation.** Test on fresh Windows 10/11 accounts, with no Python, development folders, Ollama or ComfyUI.
 - [ ] **App startup, close, uninstall and update.** No unnecessary administrator access; proper icon and display name; user data stays outside the app installation directory and survives upgrades/uninstall as expected.
 - [ ] **Reproducible build pipeline.** Pin and hash dependencies, automate a clean build in a documented environment, generate release checksums, and archive build inputs.
@@ -101,6 +101,7 @@ This is the **living master checklist** for readiness to distribute Campaign For
 
 ## Change log for this checklist
 
+- **2026-11-06:** Owner reported first standalone exe smoke test: launch, save/reopen, preview and PDF export passed (4 of 5); offline operation not yet tested. One-folder independence and clean-machine tests remain open.
 - **2026-11-06:** Created master Steam Ready Checklist after GitHub v1.0.0 source beta release and owner confirmation of Windows PDF preview. Based on README, KNOWN_ISSUES, BUILDING, RELEASE_AUDIT_CHECKLIST and official Steamworks documentation.
 
 ## Official references (recheck before launch)
