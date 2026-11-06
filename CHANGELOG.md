@@ -1,13 +1,36 @@
 # Changelog
 
-## Unreleased — SDXL workflow preset and ComfyUI integration foundations
+## v1.1.0-beta.4 — exact-model safety and no fallback (2026-11-06)
 
-- Add **Find models folder** and **Where is it in Comfy Desktop?** controls for ComfyUI checkpoint selection. Recognizes common newer/older Windows shared-model folders, with manual selection for custom locations.
-- Clarify that the selected path is a `checkpoints` **folder**, not an individual model file, and that Campaign Forge's image generation integration with ComfyUI is not yet implemented.
-- Added the seven-node, API-format SDXL Base workflow preset from a successful real ComfyUI Desktop test (with a generic example prompt instead of the owner's map prompt). The preset uses only core ComfyUI nodes.
-- Added `comfy_bridge.py` for safe preset customization and opt-in, localhost-only ComfyUI connectivity, checkpoint listing and prompt submission. **Not yet connected to Campaign Forge's UI**; no live API or Windows executable integration test yet.
-- Added adapter regression tests with mocked ComfyUI responses. Initial local source test suite: 102 tests plus 7 subtests passed; newest GitHub CI is still to be verified.
-- Folder discovery instructions and updated dialog still need verification on Windows.
+- Fixed the Art Studio reconnect behavior that previously substituted an available model when the selected model disappeared; with several ready models, the user must explicitly choose one.
+- Immediately before each generation job, check that the active ComfyUI instance still reports the **exact selected model, matching loader and required companion files**. If not, stop without queueing another model.
+- Show the chosen model filename in confirmation, queued/completed job status; lock model selection while a job is running.
+- Preserved SDXL Low/Medium/High quality presets. No model weights, paid services or ComfyUI instances were bundled.
+- Locally tested against mocked ComfyUI APIs and an X virtual desktop (153 tests and 7 subtests). Real Windows/GPU verification pending.
+
+## v1.1.0-beta.3 — multi-model ComfyUI workflows (2026-11-06)
+
+- Added detection of locally installed SDXL / standard Stable Diffusion checkpoints, Z-Image Turbo diffusion models, and FLUX.1 Schnell/Dev diffusion models from the *running ComfyUI instance*. Missing text encoders or VAEs are reported before generation.
+- Added built-in, restricted core-node workflows for Z-Image Turbo (Qwen text encoder, AuraFlow sampling) and FLUX.1 (dual CLIP/T5 encoders, SD3 latent, flow-appropriate sampling). No models or custom nodes are bundled.
+- Model-specific Low/Medium/High settings now select safer resolutions and sampling-step counts; the user can still adjust values. Negative prompt/CFG apply only to standard Stable Diffusion and SDXL and are explicitly documented as ignored by Z-Image/FLUX.
+- Preserved SDXL generation, PNG preview/export, The Archives import, and ComfyUI's local-only API access. Avoids re-downloading checkpoints on application update.
+- **139 tests and 7 subtests passed locally**, including a simulated graphical Z-Image end-to-end test. SDXL has been verified on the owner's Windows GPU in beta.1; new families **not yet verified on real Windows/GPU**.
+
+## v1.1.0-beta.2 — AI Art Studio quality and model status (2026-11-06)
+
+- Added Low / Medium / High image-generation presets that adjust resolution and sampling steps; all use the same selected SDXL checkpoint. Defaults: 512px/15 steps, 768px/25 steps, and 1024px/35 steps respectively. These are speed/detail options, not different AI models or guarantees of better output.
+- Added **Check Model Status** to optional SDXL setup. It queries a running local ComfyUI instance and checks selected/known local model directories, without downloading anything. Avoids confusing an existing installation with a fresh download prompt after an app update.
+- The model stays in the user's ComfyUI directories across Campaign Forge upgrades; no model weights included in ZIP. Test on real Windows ComfyUI Desktop still pending for these specific UI changes.
+- Source regression tests for quality settings and model detection; earlier owner live Windows Art Studio generation was successful in v1.1.0-beta.1.
+
+## v1.1.0-beta.1 — ComfyUI local Art Studio test build (2026-11-06)
+
+- Added a **Generate Image (ComfyUI)** button inside Cartography, opening a dedicated Art Studio with positive/negative prompts, four starter presets, image size, steps, CFG and seed settings.
+- Uses the verified seven-node SDXL Base 1.0 workflow supplied by the owner; it submits to a running **local** ComfyUI instance only after user approval. Detects local ports 8188/8000 or accepts another explicit loopback port. No AI model or cloud API is required.
+- Polls the ComfyUI job, retrieves an output image, previews it, saves a PNG or copies it to campaign Archives. A map-background link is optional and requires confirmation.
+- Added Comfy Desktop checkpoints folder help, tests and the project's approved CF crest as a Windows application icon.
+- Local tests: 118 passed + 1 GUI test skipped without a display; with virtual display: 119 passed, including mocked ComfyUI generation / Archives import. **Actual ComfyUI Windows GPU/API integration still needs testing.**
+- The new release is Python **source code** plus build scripts. No precompiled/signed Windows binary, models, Ollama, ComfyUI or API keys are bundled. No third-party binary distribution audit is claimed.
 
 ## v1.0.0 — First GitHub community beta (source package)
 

@@ -6,7 +6,7 @@ goto launch
 :beta_notice
 echo.
 echo --------------------------------------------------------
-echo CAMPAIGN FORGE v1.0.0 - EXPERIMENTAL PUBLIC BETA
+echo CAMPAIGN FORGE v1.1.0-beta.4 - EXPERIMENTAL PUBLIC BETA
 echo No warranty. Bugs and data loss are possible. Keep backups.
 echo Optional APIs may incur charges and send data online.
 echo Optional AI downloads may use substantial disk/data/GPU.

@@ -1,17 +1,12 @@
-CAMPAIGN FORGE 1.0.0 — PUBLIC COMMUNITY BETA
+CAMPAIGN FORGE v1.1.0-beta.4 — TEST BUILD
 
-THIS IS AN EXPERIMENTAL PYTHON APPLICATION, NOT A SIGNED EXE.
-BACK UP YOUR FILES. AI IS OPTIONAL. THIRD-PARTY APIS MAY BILL YOU.
+1. Extract this ZIP to a NEW folder. Back up your campaigns and The Archives first.
+2. Double-click start_windows.bat (Python 3.11+ required). The normal editor works without AI.
+3. Run your separately installed ComfyUI Desktop instance and open Cartography > Generate Image (ComfyUI).
+4. Click Find / Connect. The model list now includes compatible installed SDXL/SD checkpoints, Z-Image Turbo, FLUX.1 Schnell and FLUX.1 Dev if ComfyUI sees them.
+5. Select a model. With multiple ready models you must choose explicitly. If one is missing, CF stops instead of substituting SDXL. Install missing companion files in ComfyUI, restart it, and click Check model status. No AI files are downloaded by this build.
+6. Enter your prompt, choose a quality level, and click Generate image. Negative prompt and CFG affect SD/SDXL only, NOT Z-Image or FLUX.
+7. Save PNG as... or add artwork to The Archives. Save campaign changes separately.
+8. To build a Windows executable, run build_windows.bat on Windows after setup, and keep the whole dist\CampaignForge folder together.
 
-WINDOWS SETUP
-1. Install Python 3.11+ with the py launcher from python.org.
-2. Extract the Campaign Forge source ZIP outside Program Files.
-3. Run start_windows.bat and review the beta notice.
-4. Save a new .campaign.json before making major changes.
-5. Back up Archives separately. Keep old versions and saves.
-
-REPORT BUGS OR IDEAS
-https://github.com/liamupchurch-hue/CampaignForge/issues
-Do not upload API keys, private campaign material, or personal paths.
-
-See README.md, BETA_DISCLAIMER.md, API_AND_DATA_NOTICE.md, and LICENSE.
+This is experimental source-only software. Keep your old version. Z-Image/FLUX require further Windows testing.
