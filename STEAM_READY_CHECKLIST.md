@@ -40,6 +40,7 @@ This is the **living master checklist** for readiness to distribute Campaign For
 - [x] **No model weights, ComfyUI, Ollama, GPU drivers or API keys bundled in the source beta.**
 - [ ] **Local model discovery and capabilities.** Detect installed Ollama models and supported text/vision skills; don't claim every model supports every function.
 - [ ] **ComfyUI integration decision.** Current setup guidance exists; actual generation through ComfyUI's local execution API is not wired in. Implement and test only if we choose it as a Steam launch feature.
+- [~] **ComfyUI Desktop model folder experience.** Added source-level folder discovery and explicit Settings → Storage → Shared Models guidance (2026-11-06). Local regression tests pass. Owner should confirm the updated dialog and installed SDXL checkpoint on Windows; this does not yet create/run workflows or a ComfyUI instance.
 - [ ] **Robust AI permissions.** Never send documents, images or personal data to cloud providers without deliberate consent; no covert background calls; preview AI edits; allow disable-all-AI mode.
 - [ ] **API billing explanations.** Bring-your-own key, no auto-billing by Campaign Forge, readable usage warnings, safe key storage and redaction in diagnostics; never promise to control third-party charges.
 - [ ] **External model/API terms.** Users independently install and license optional models. Campaign Forge needs a documented integration/third-party terms review for the interfaces and any downloader it implements. Do not assume unbundled implies *zero* legal or security obligations.
@@ -101,6 +102,7 @@ This is the **living master checklist** for readiness to distribute Campaign For
 
 ## Change log for this checklist
 
+- **2026-11-06:** Recorded ComfyUI setup usability issue and published source-level folder guidance/discovery fix; Windows confirmation and ComfyUI workflow integration remain pending.
 - **2026-11-06 (laptop retest):** With the correctly packaged executable and supporting files, user confirms launch/save-and-reopen/existing-book preview/PDF export all pass on laptop, matching desktop tests. Prior DLL failure traced to incomplete one-folder transfer. Offline and known Python-free checks remain open.
 - **2026-11-06 (laptop photo 2):** Compiled exe now starts far enough to show PyInstaller loader error about `Downloads\\_internal\\python313.dll`; exe is shown at Downloads root. Most likely deployment was incomplete (onedir `_internal` not transferred). Corrective test: retain the entire `dist\\CampaignForge` folder structure. No changes to code until retested.
 - **2026-11-06 (photo correction):** Exact dialog is Smart App Control, and Explorer shows `build_windows.bat` selected in downloaded source. Earlier shorthand implying that the compiled exe was blocked was premature; compiled exe remains untested on laptop. Security compatibility remains open. Desktop's 4/5 smoke-test results remain valid.
