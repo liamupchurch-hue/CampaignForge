@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.1.0-beta.3 — multi-model ComfyUI workflows (2026-11-06)
+
+- Added detection of locally installed SDXL / standard Stable Diffusion checkpoints, Z-Image Turbo diffusion models, and FLUX.1 Schnell/Dev diffusion models from the *running ComfyUI instance*. Missing text encoders or VAEs are reported before generation.
+- Added built-in, restricted core-node workflows for Z-Image Turbo (Qwen text encoder, AuraFlow sampling) and FLUX.1 (dual CLIP/T5 encoders, SD3 latent, flow-appropriate sampling). No models or custom nodes are bundled.
+- Model-specific Low/Medium/High settings now select safer resolutions and sampling-step counts; the user can still adjust values. Negative prompt/CFG apply only to standard Stable Diffusion and SDXL and are explicitly documented as ignored by Z-Image/FLUX.
+- Preserved SDXL generation, PNG preview/export, The Archives import, and ComfyUI's local-only API access. Avoids re-downloading checkpoints on application update.
+- **139 tests and 7 subtests passed locally**, including a simulated graphical Z-Image end-to-end test. SDXL has been verified on the owner's Windows GPU in beta.1; new families **not yet verified on real Windows/GPU**.
+
+## v1.1.0-beta.2 — AI Art Studio quality and model status (2026-11-06)
+
+- Added Low / Medium / High image-generation presets that adjust resolution and sampling steps; all use the same selected SDXL checkpoint. Defaults: 512px/15 steps, 768px/25 steps, and 1024px/35 steps respectively. These are speed/detail options, not different AI models or guarantees of better output.
+- Added **Check Model Status** to optional SDXL setup. It queries a running local ComfyUI instance and checks selected/known local model directories, without downloading anything. Avoids confusing an existing installation with a fresh download prompt after an app update.
+- The model stays in the user's ComfyUI directories across Campaign Forge upgrades; no model weights included in ZIP. Test on real Windows ComfyUI Desktop still pending for these specific UI changes.
+- Source regression tests for quality settings and model detection; earlier owner live Windows Art Studio generation was successful in v1.1.0-beta.1.
+
 ## v1.1.0-beta.1 — ComfyUI local Art Studio test build (2026-11-06)
 
 - Added a **Generate Image (ComfyUI)** button inside Cartography, opening a dedicated Art Studio with positive/negative prompts, four starter presets, image size, steps, CFG and seed settings.

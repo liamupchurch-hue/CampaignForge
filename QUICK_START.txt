@@ -1,17 +1,12 @@
-Campaign Forge v1.1.0-beta.1 — LOCAL COMFYUI ART STUDIO TEST BUILD
+CAMPAIGN FORGE v1.1.0-beta.3 — TEST BUILD
 
-1. Extract this ZIP to a separate folder and back up your campaign JSON + Archives.
-2. Double-click start_windows.bat (Windows; Python 3.11+ required for source launch).
-3. Start Comfy Desktop separately. Confirm your SDXL Base 1.0 checkpoint is installed.
-4. Open Cartography > Generate Image (ComfyUI) in Campaign Forge.
-5. It will try local ports 8188 or 8000. Click Find / Connect and select the checkpoint.
-6. Enter positive and negative prompts; Generate Image; approve the local request.
-7. Preview the image, Save PNG or Add to The Archives.
+1. Extract this ZIP to a NEW folder. Back up your campaigns and The Archives first.
+2. Double-click start_windows.bat (Python 3.11+ required). The normal editor works without AI.
+3. Run your separately installed ComfyUI Desktop instance and open Cartography > Generate Image (ComfyUI).
+4. Click Find / Connect. The model list now includes compatible installed SDXL/SD checkpoints, Z-Image Turbo, FLUX.1 Schnell and FLUX.1 Dev if ComfyUI sees them.
+5. Select a model. If required companion model files are missing, install them in ComfyUI's models folders, restart ComfyUI and reconnect. No AI files are downloaded by this test build.
+6. Enter your prompt, choose a quality level, and click Generate image. Negative prompt and CFG affect SD/SDXL only, NOT Z-Image or FLUX.
+7. Save PNG as... or add artwork to The Archives. Save campaign changes separately.
+8. To build a Windows executable, run build_windows.bat on Windows after setup, and keep the whole dist\CampaignForge folder together.
 
-This is SOURCE CODE, not a prebuilt Windows exe. For your OWN test executable,
-run build_windows.bat after start_windows.bat and keep all files inside
-dist\CampaignForge together. Do not redistribute binary before license/security audit.
-No models, ComfyUI, GPU drivers, or cloud API keys are included.
-Actual live Windows ComfyUI testing remains pending.
-
-More: README.md, KNOWN_ISSUES.md, BETA_DISCLAIMER.md, API_AND_DATA_NOTICE.md.
+This is experimental source-only software. Keep your old version. Z-Image/FLUX require further Windows testing.

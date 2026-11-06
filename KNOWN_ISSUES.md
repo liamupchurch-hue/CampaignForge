@@ -1,4 +1,4 @@
-# Known limitations — v1.1.0-beta.1 source test build
+# Known limitations — v1.1.0-beta.3 source test build
 
 - Project edits proposed by local AI require user approval; generated chronology or labels may still be wrong.
 - The Roster and scanned PDF/JPEG/PNG interpretation depend on templates and compatible local models; sheet extraction may be inaccurate.
@@ -13,3 +13,12 @@
 - Live Windows/GPU configurations, network failures, and large-model downloads have not been exhaustively tested.
 
 Please search existing Issues before reporting duplicates. The maintainer may not be able to respond immediately.
+
+- Low/Medium/High only change image size and sampling steps; perceived artistic quality may require different compatible checkpoints, a refiner or improved prompt/model settings. No new models bundled.
+
+## Experimental local ComfyUI model routing (beta.3)
+
+- Z-Image Turbo and FLUX.1 require separately installed diffusion weights, text encoders and VAE in the folders ComfyUI indexes. If CF reports missing companion files, check the running ComfyUI installation; do not copy models into the Campaign Forge installation folder.
+- Only **Z-Image Turbo** and **FLUX.1 Schnell/Dev** are recognized among newer diffusion architectures. Other AI architectures or unusual quantizations can require separate graphs/custom nodes and remain unsupported.
+- Z-Image Turbo / FLUX ignore the negative prompt and CFG fields; SDXL and standard Stable Diffusion honor them. Checkpoints with ambiguous filenames may be classified as standard SD and require verification.
+- Live Z-Image and FLUX GPU runs have not been verified by the owner; some models may exhaust available VRAM. The v1.1.0-beta.3 source build is not a signed Windows executable.

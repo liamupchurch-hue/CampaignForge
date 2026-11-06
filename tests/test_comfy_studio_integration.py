@@ -98,3 +98,20 @@ def test_app_has_button_and_build_includes_workflow_asset():
     assert 'from comfy_studio import open_comfy_studio' in app
     assert '--add-data "assets;assets"' in script
     assert (root/'assets/workflows/sdxl_base_api.json').is_file()
+
+
+def test_quality_choices_adjust_sampling_and_resolution_not_checkpoint():
+    from comfy_studio import QUALITY_PRESETS, quality_settings
+    assert tuple(QUALITY_PRESETS) == ('Low — fast', 'Medium — balanced', 'High — more detail')
+    assert quality_settings('Low — fast') == ('512 x 512', '15')
+    assert quality_settings('Medium — balanced') == ('768 x 768', '25')
+    assert quality_settings('High — more detail') == ('1024 x 1024', '35')
+    assert quality_settings('High — more detail') != quality_settings('Low — fast')
+    with pytest.raises(ValueError):
+        quality_settings('Ultra experimental')
+    for name in QUALITY_PRESETS:
+        dimensions, steps = quality_settings(name)
+        graph = create_image_workflow('A vivid cavern', '', 'sd_xl_base_1.0.safetensors',
+                                      dimensions, steps, '7', '1')
+        assert graph['15']['inputs']['ckpt_name'] == 'sd_xl_base_1.0.safetensors'
+        assert graph['12']['inputs']['steps'] == int(steps)

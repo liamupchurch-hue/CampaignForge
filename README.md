@@ -1,8 +1,22 @@
-# Campaign Forge v1.1.0-beta.1 — Local Art Studio Test Build
+# Campaign Forge v1.1.0-beta.3 — Multi-Model Art Studio Test Build
 
 > **EXPERIMENTAL SOURCE TEST BUILD — NOT A PUBLICLY AUDITED WINDOWS RELEASE.** Back up campaigns and Archives before testing. The original v1.0.0 source beta and its historical release notes are retained below. There is no ready-built Windows .exe in this ZIP; build a local exe using the Windows script if desired.
 
-## NEW: ComfyUI AI Art Studio (v1.1.0-beta.1)
+## NEW: ComfyUI AI Art Studio (v1.1.0-beta.3)
+**Beta 3 experimental model routing:** In **Cartography → Generate Image (ComfyUI)**, select an installed model recognized by your running ComfyUI instance. Campaign Forge now offers its existing **SDXL/standard Stable Diffusion checkpoint workflow** and separate built-in core-node workflows for **Z-Image Turbo**, **FLUX.1 Schnell** and **FLUX.1 Dev**. It reads model names from ComfyUI, not from Campaign Forge's version folder, and checks for required companion files before enabling Generate. It never downloads a model implicitly.
+
+**Required external files:**
+- **SDXL or conventional SD checkpoint:** a suitable model in ComfyUI's `models/checkpoints`.
+- **Z-Image Turbo:** Z-Image Turbo diffusion model in `models/diffusion_models`, a compatible `qwen_3_4b` text encoder in `models/text_encoders`, and `ae.safetensors` VAE in `models/vae`.
+- **FLUX.1 Schnell or FLUX.1 Dev:** matching diffusion model in `models/diffusion_models`, `clip_l` and `t5xxl` encoders in `models/text_encoders`, and `ae.safetensors` VAE in `models/vae`.
+
+**Prompt limitation:** Positive prompts are supported for all listed families. **Negative prompts and CFG adjustments apply only to SD/SDXL**; FLUX and Z-Image use architecture-specific conditioning/sampling and ignore those two inputs. Low / Medium / High vary by model architecture and do **not** magically upgrade model quality. The ComfyUI GPU instance must remain running. Some models may exceed the available VRAM or require newer ComfyUI core nodes.
+
+**Verification:** 139 automated tests and 7 subtests passed in a local virtual GUI environment, including a fake local Z-Image generation. The user's real Windows machine previously confirmed SDXL generation in beta.1; **live Z-Image/FLUX GPU execution and this beta.3 Windows release still need testing**. This is not a compiled `.exe` or general redistribution audit.
+
+
+**Beta 2 carried forward:** The Art Studio now offers **Low / Medium / High** size-and-steps presets (same checkpoint, more steps do not guarantee better art). In **AI image model setup**, click **Check Model Status** to see whether your running ComfyUI already has SDXL, even if Campaign Forge itself has never recorded a download. Upgrading Campaign Forge does not remove or reinstall existing ComfyUI checkpoints.
+
 
 This test build introduces a **Generate Image (ComfyUI)** button inside **Cartography**. It opens a separate Art Studio with positive and negative prompt fields, four starter art types, model dropdown, image sizes, seed/steps/CFG, preview, PNG export and optional **Add to The Archives**. Map backgrounds are changed **only after you approve**.
 
@@ -83,7 +97,7 @@ Choose a prop; click on the map to select it. **Prop size** sets the footprint (
 
 ### Optional image-model download: ComfyUI + SDXL Base
 
-Open **Cartography → AI image model setup** (also offered under **The Oracle → Creative Consultation → Local Oracle**) for guided setup. The window opens the official ComfyUI installer site and license page, and can **download the official SDXL Base 1.0 checkpoint (~6.94 GB)** into the *ComfyUI/models/checkpoints* folder that you choose. It supports partial downloads, shows progress and verifies SHA-256 before completing. Check model license and available disk space and bandwidth first. ComfyUI is separate software; v1.1.0-beta.1 adds a local Art Studio Generate button in Cartography, but still requires ComfyUI running independently. None of the multi-gigabyte model files are bundled. This installer was not live-tested against the full 6.94 GB download on Windows.
+Open **Cartography → AI image model setup** (also offered under **The Oracle → Creative Consultation → Local Oracle**) for guided setup. The window opens the official ComfyUI installer site and license page, and can **download the official SDXL Base 1.0 checkpoint (~6.94 GB)** into the *ComfyUI/models/checkpoints* folder that you choose. It supports partial downloads, shows progress and verifies SHA-256 before completing. Check model license and available disk space and bandwidth first. ComfyUI is separate software; v1.1.0-beta.2 adds a local Art Studio Generate button in Cartography, but still requires ComfyUI running independently. None of the multi-gigabyte model files are bundled. This installer was not live-tested against the full 6.94 GB download on Windows.
 
 ## Known limitations that remain
 

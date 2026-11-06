@@ -5,7 +5,7 @@ def test_public_version_label_and_no_restrictive_pdf_dependency():
     root = Path(__file__).resolve().parent.parent
     app = (root / 'app.py').read_text(encoding='utf-8')
     req = (root / 'requirements.txt').read_text(encoding='utf-8').lower()
-    assert 'APP_VERSION = "1.1.0-beta.1"' in app
+    assert 'APP_VERSION = "1.1.0-beta.3"' in app
     assert 'pymupdf' not in req and 'pypdfium2' in req
     assert 'pypdf' in req
 

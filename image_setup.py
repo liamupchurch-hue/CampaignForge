@@ -60,6 +60,32 @@ def checkpoints_help_text():
     )
 
 
+def inspect_model_status(checkpoint_names, checkpoint_dirs):
+    """Find an existing SDXL installation without downloading or changing files.
+
+    Active ComfyUI's model index is the authoritative readiness signal; local
+    filenames are only hints and are not treated as integrity verification.
+    Returns (state, message, detected_directory).
+    """
+    if any(isinstance(name, str) and Path(name.replace('\\', '/')).name.casefold() == MODEL_FILE.casefold()
+           for name in (checkpoint_names or [])):
+        return ('ready', 'SDXL Base is already available in the running ComfyUI instance. No download is needed.', None)
+    seen = set()
+    for folder in checkpoint_dirs:
+        if not folder:
+            continue
+        directory = Path(folder)
+        key = str(directory).casefold()
+        if key in seen:
+            continue
+        seen.add(key)
+        if (directory / MODEL_FILE).is_file():
+            return ('found', 'SDXL Base file found on disk. It has not been re-verified here; check that your running ComfyUI instance lists this checkpoint.', directory)
+        if (directory / (MODEL_FILE + '.part')).is_file():
+            return ('partial', 'An unfinished SDXL download was found. Select this folder if you want to resume; do not start a second download elsewhere.', directory)
+    return ('unknown', 'No SDXL checkpoint was detected in the running instance or checked folders. This does NOT prove it is absent elsewhere; select your ComfyUI checkpoints folder to check.', None)
+
+
 def download_checkpoint(destination, notify, stopped, opener=None):
     """Resume if supported; hash-check before publishing the model to ComfyUI."""
     destination=Path(destination)
@@ -72,7 +98,7 @@ def download_checkpoint(destination, notify, stopped, opener=None):
         raise ValueError('An existing model file failed verification. Move or rename it before downloading.')
     existing=temporary.stat().st_size if temporary.exists() else 0
     request=urllib.request.Request(MODEL_URL,headers={
-        'User-Agent':'CampaignForge/1.1.0-beta.1 (optional-model-download)',
+        'User-Agent':'CampaignForge/1.1.0-beta.3 (optional-model-download)',
         **({'Range':f'bytes={existing}-'} if existing else {})})
     opener=opener or urllib.request.build_opener()
     with opener.open(request,timeout=60) as response:
@@ -140,12 +166,50 @@ def open_image_setup(parent):
             messagebox.showinfo('Models folder not detected',checkpoints_help_text(),parent=dlg)
     ttk.Button(finder,text='Find models folder',command=find_models).pack(side='left')
     ttk.Button(finder,text='Where is it in Comfy Desktop?',command=lambda:messagebox.showinfo('Locate checkpoints',checkpoints_help_text(),parent=dlg)).pack(side='left',padx=8)
+    status_button=ttk.Button(finder,text='Check Model Status')
+    status_button.pack(side='left',padx=8)
     progress=tk.DoubleVar(value=0)
     bar=ttk.Progressbar(content,variable=progress,maximum=100);bar.pack(fill='x',pady=(12,5))
-    status=tk.StringVar(value='Not downloaded. Install ComfyUI first and select its checkpoints folder.')
+    status=tk.StringVar(value='Model status not checked yet. Existing models are never removed by an update.')
     ttk.Label(content,textvariable=status,style='Muted.TLabel',wraplength=685).pack(anchor='w')
     buttons=ttk.Frame(content);buttons.pack(fill='x',side='bottom',pady=7)
     cancel_event=threading.Event();running={'value':False}
+    checking={'value':False}
+    model_ready={'value':False}
+
+    def check_model_status():
+        if checking['value'] or running['value']:
+            return
+        checking['value']=True
+        status_button.configure(state='disabled')
+        status.set('Checking the running ComfyUI instance and existing model folders…')
+        folders=[path.get()] if path.get() else []
+        folders.extend(candidate_checkpoint_dirs())
+        def worker():
+            names=[]
+            try:
+                from comfy_bridge import find_local_comfy
+                names=find_local_comfy().checkpoints()
+            except (OSError, ValueError, TimeoutError, ConnectionError):
+                pass  # ComfyUI may be stopped or using another configured port.
+            state, note, detected=inspect_model_status(names, folders)
+            def update():
+                checking['value']=False
+                if not dlg.winfo_exists():
+                    return
+                model_ready['value']=(state=='ready')
+                status.set(note)
+                status_button.configure(state='normal')
+                if state in ('ready', 'found'):
+                    progress.set(100 if state=='ready' else 0)
+                if detected and not path.get():
+                    path.set(str(detected))
+            try:
+                dlg.after(0, update)
+            except RuntimeError:
+                pass
+        threading.Thread(target=worker,daemon=True).start()
+    status_button.configure(command=check_model_status)
     download_btn=ttk.Button(buttons,text='3. Download SDXL Base (~6.94 GB)')
     download_btn.pack(side='left')
     def stop():
@@ -157,6 +221,12 @@ def open_image_setup(parent):
         directory=Path(path.get()) if path.get() else None
         if not directory or directory.name.casefold()!='checkpoints' or directory.parent.name.casefold()!='models':
             messagebox.showwarning('Choose checkpoints folder','Select the ComfyUI checkpoints FOLDER, not an individual model file. Use Find models folder or Comfy Desktop > Settings > Storage > Shared Models.',parent=dlg);return
+        if model_ready['value']:
+            messagebox.showinfo('SDXL already installed','The running ComfyUI instance already lists SDXL Base 1.0. You do not need to download it again.',parent=dlg)
+            return
+        if (directory / MODEL_FILE).is_file():
+            messagebox.showinfo('SDXL file already present','An SDXL checkpoint already exists in the selected folder. Use Check Model Status to confirm ComfyUI sees it; do not download another copy.',parent=dlg)
+            return
         if not messagebox.askyesno('Download ~6.94 GB?',
             'You are choosing an optional third-party SDXL Base 1.0 model download.\n\nReview its model card and CreativeML Open RAIL++-M license; you are responsible for complying with that license. This download is NOT part of the Campaign Forge package. It may use ~6.94 GB of data and disk space.\n\nHave you reviewed the model terms and do you wish to download it?',parent=dlg):return
         running['value']=True;cancel_event.clear();download_btn.configure(state='disabled')
@@ -178,5 +248,6 @@ def open_image_setup(parent):
                 parent.after(0,done)
         threading.Thread(target=task,daemon=True).start()
     download_btn.configure(command=start)
+    dlg.after(350,check_model_status)
     dlg.protocol('WM_DELETE_WINDOW',stop)
     return dlg

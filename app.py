@@ -41,7 +41,7 @@ from comfy_studio import open_comfy_studio
 from project_actions import project_outline_context, action_instructions, normalize_plan, apply_actions, summarize_actions
 from archive_vision import describe_image, match_requested_image
 
-APP_VERSION = "1.1.0-beta.1"
+APP_VERSION = "1.1.0-beta.3"
 
 # Studio Dark: contemporary writing tools, with subtle dungeon/brass accents.
 BG = '#121B25'
