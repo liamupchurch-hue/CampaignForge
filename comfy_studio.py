@@ -108,6 +108,24 @@ def describe_model_family(family: str) -> str:
     return 'Unknown model family: no validated workflow. Choose a supported model instead.'
 
 
+def choose_connected_model(previous: str, choices: dict[str, ModelChoice]) -> tuple[str, str]:
+    """Never silently substitute a different model during connection refresh.
+
+    Preselect only when exactly one usable model is reported by ComfyUI.
+    """
+    if previous:
+        if previous in choices:
+            return previous, ''
+        return '', (f'Previously selected model "{previous}" is not available in this ComfyUI instance. '
+                    'No replacement model was selected. Choose an installed model.')
+    ready = [name for name, item in choices.items() if item.ready]
+    if len(ready) == 1:
+        return ready[0], ''
+    if len(ready) > 1:
+        return '', f'{len(ready)} installed models found. Select the model you want to use; no default was chosen.'
+    return '', 'No ready supported models found. Check model status and install any missing required files.'
+
+
 def checkpoint_quality_note(family: str) -> str:
     profiles = QUALITY_PROFILES.get(family, QUALITY_PROFILES['unknown'])
     return '; '.join(f'{key.split(" — ")[0]}: {dim.replace(" x ", "×")}, {steps} steps'
@@ -170,6 +188,8 @@ class ComfyStudio(tk.Toplevel):
         self._archive_id = None
         self.model_family = 'unknown'
         self.model_options = {}
+        self.missing_model_message = ''
+        self.current_job_model = ''
         self.model_status = tk.StringVar(value='Model status will appear here after connection.')
         self._build()
         self.protocol('WM_DELETE_WINDOW', self.close)
@@ -305,12 +325,13 @@ class ComfyStudio(tk.Toplevel):
         self.model_status.set(self._model_description())
 
     def on_checkpoint_changed(self, _event=None):
+        self.missing_model_message = ''
         self.refresh_model_status(auto_apply=True)
 
     def _model_description(self):
         choice = self.model_options.get(self.checkpoint.get().strip())
         if choice is None:
-            return 'Select an installed model from the ComfyUI list.'
+            return self.missing_model_message or 'Select an installed model from the ComfyUI list. No model will be substituted.'
         message = describe_model_family(choice.family) + ' ' + checkpoint_quality_note(choice.family)
         if not choice.ready:
             message += ' MISSING: ' + ', '.join(choice.missing) + '. Add those files to ComfyUI and reconnect.'
@@ -321,7 +342,7 @@ class ComfyStudio(tk.Toplevel):
         self.model_family = choice.family if choice else 'unknown'
         self.model_status.set(self._model_description())
         self.model_button.configure(state='normal' if self.client is not None else 'disabled')
-        self.generate_button.configure(state='normal' if choice and choice.ready and self.client and not self._busy else 'disabled')
+        self.generate_button.configure(state='normal' if choice and choice.ready and self.client and not self._busy and not self._connecting else 'disabled')
         if choice and choice.ready and auto_apply:
             self.apply_quality()
 
@@ -374,6 +395,9 @@ class ComfyStudio(tk.Toplevel):
                             if selected.family in ('zimage', 'flux_schnell', 'flux_dev') else '')
         if not messagebox.askyesno('Generate with local ComfyUI?',
                                    'Submit this image request to your running LOCAL ComfyUI instance?\n\n'
+                                   f'Selected model: {selected.filename}\n'
+                                   f'Model family: {selected.family}\n\n'
+                                   'The model will be rechecked against the active server before submission.\n'
                                    'Your GPU will work until generation completes. No cloud API is called by Campaign Forge.'
                                    + workflow_warning, parent=self):
             return
@@ -381,6 +405,8 @@ class ComfyStudio(tk.Toplevel):
         job = self._job_number
         self._cancel_generation = threading.Event()
         self._busy = True
+        self.current_job_model = selected.filename
+        self.checkpoints.configure(state='disabled')
         self.selected_image = None
         self._archive_id = None
         self.preview_photo = None
@@ -391,12 +417,14 @@ class ComfyStudio(tk.Toplevel):
         self.stop_button.configure(state='normal')
         self.busy_bar.start(12)
         self.status.set(f'Sending the built-in {selected.family.replace("_", " ").upper()} workflow to ComfyUI…')
-        self._run_worker(self._generation_worker, job, self.client, graph, self._cancel_generation)
+        self._run_worker(self._generation_worker, job, self.client, graph, selected, self._cancel_generation)
 
-    def _generation_worker(self, job, client, graph, stopped):
+    def _generation_worker(self, job, client, graph, selected, stopped):
         try:
-            prompt_id = client.submit(graph)
-            self.events.put(('job_started', job, prompt_id))
+            if stopped.is_set() or self._closed.is_set():
+                return
+            prompt_id = client.submit_checked(graph, selected)
+            self.events.put(('job_started', job, prompt_id, selected.filename))
             deadline = time.monotonic() + MAX_WAIT_S
             while time.monotonic() < deadline and not stopped.is_set() and not self._closed.is_set():
                 result = client.image_output(prompt_id)
@@ -419,6 +447,7 @@ class ComfyStudio(tk.Toplevel):
             self._busy = False
             self.busy_bar.stop()
             self.stop_button.configure(state='disabled')
+            self.checkpoints.configure(state='readonly')
             self.refresh_model_status()
             self.status.set('Stopped waiting. An already queued ComfyUI job may continue on the GPU.')
 
@@ -440,8 +469,11 @@ class ComfyStudio(tk.Toplevel):
                 self.model_options = {m.display: m for m in choices}
                 models = list(self.model_options)
                 self.checkpoints.configure(values=models)
-                preferred = next((m for m in models if m.casefold() == 'sd_xl_base_1.0.safetensors'), None)
-                self.checkpoint.set(previous if previous in self.model_options else preferred or (models[0] if models else ''))
+                selected, warning = choose_connected_model(previous, self.model_options)
+                self.checkpoint.set(selected)
+                self.missing_model_message = warning
+                if warning:
+                    self.status.set(warning)
                 ready = sum(item.ready for item in choices)
                 self.connection_note.set(f'Connected locally: {self.client.base_url} — {ready} ready model(s), {len(choices)} recognized.' +
                                          ('' if models else ' Install a compatible model and restart the instance.'))
@@ -452,6 +484,7 @@ class ComfyStudio(tk.Toplevel):
                 self._connecting = False
                 self.client = None
                 self.model_options = {}
+                self.missing_model_message = 'ComfyUI is disconnected. Reconnect and select an installed model.'
                 self.checkpoints.configure(values=())
                 self.checkpoint.set('')
                 self.connect_button.configure(state='normal')
@@ -459,21 +492,23 @@ class ComfyStudio(tk.Toplevel):
                 self.model_button.configure(state='disabled')
                 self.model_status.set('Model status unavailable until Campaign Forge connects to ComfyUI.')
             elif kind == 'job_started' and msg[1] == self._job_number:
-                self.status.set('Generation queued on ComfyUI. Waiting for the image (up to 15 minutes)…')
+                self.status.set(f'Generation queued with {msg[3]}. Waiting for the image (up to 15 minutes)…')
             elif kind == 'finished' and msg[1] == self._job_number:
                 self._busy = False
                 self.busy_bar.stop()
                 self.stop_button.configure(state='disabled')
+                self.checkpoints.configure(state='readonly')
                 self.refresh_model_status()
                 self.selected_image = msg[2]
                 self._show_preview(self.selected_image)
                 self.save_button.configure(state='normal')
                 self.archive_button.configure(state='normal')
-                self.status.set('Image generated. Preview it, save as PNG, or add to The Archives.')
+                self.status.set(f'Image generated with {self.current_job_model}. Preview, save as PNG, or add to The Archives.')
             elif kind == 'generation_failed' and msg[1] == self._job_number:
                 self._busy = False
                 self.busy_bar.stop()
                 self.stop_button.configure(state='disabled')
+                self.checkpoints.configure(state='readonly')
                 self.refresh_model_status()
                 self.status.set('Image generation failed: ' + msg[2])
                 messagebox.showerror('ComfyUI image generation', msg[2], parent=self)
