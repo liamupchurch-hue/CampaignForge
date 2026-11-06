@@ -1,9 +1,11 @@
-# Campaign Forge v1.1.0-beta.3 — Multi-Model Art Studio Test Build
+# Campaign Forge v1.1.0-beta.4 — Model Selection Safety Test Build
 
 > **EXPERIMENTAL SOURCE TEST BUILD — NOT A PUBLICLY AUDITED WINDOWS RELEASE.** Back up campaigns and Archives before testing. The original v1.0.0 source beta and its historical release notes are retained below. There is no ready-built Windows .exe in this ZIP; build a local exe using the Windows script if desired.
 
-## NEW: ComfyUI AI Art Studio (v1.1.0-beta.3)
-**Beta 3 experimental model routing:** In **Cartography → Generate Image (ComfyUI)**, select an installed model recognized by your running ComfyUI instance. Campaign Forge now offers its existing **SDXL/standard Stable Diffusion checkpoint workflow** and separate built-in core-node workflows for **Z-Image Turbo**, **FLUX.1 Schnell** and **FLUX.1 Dev**. It reads model names from ComfyUI, not from Campaign Forge's version folder, and checks for required companion files before enabling Generate. It never downloads a model implicitly.
+## NEW: ComfyUI AI Art Studio (v1.1.0-beta.4)
+**Experimental multi-model routing:** In **Cartography → Generate Image (ComfyUI)**, select an installed model recognized by your running ComfyUI instance. Campaign Forge now offers its existing **SDXL/standard Stable Diffusion checkpoint workflow** and separate built-in core-node workflows for **Z-Image Turbo**, **FLUX.1 Schnell** and **FLUX.1 Dev**. It reads model names from ComfyUI, not from Campaign Forge's version folder, and checks for required companion files before enabling Generate. It never downloads a model implicitly.
+
+**Beta 4 model-selection safety fix:** The model dropdown represents files reported by your **running ComfyUI instance**. When several ready models are present, choose one explicitly. If the previous selection disappears on reconnect, Campaign Forge **clears the selection rather than switching to SDXL or the first installed model**. Before each GPU job, it checks the exact selected checkpoint/diffusion model and its text encoders/VAE against the active ComfyUI server. Missing/changed files stop generation with a helpful message. The selected model appears in the confirmation and job status; **Check model status** refreshes the list. SDXL Low/Medium/High presets remain unchanged.
 
 **Required external files:**
 - **SDXL or conventional SD checkpoint:** a suitable model in ComfyUI's `models/checkpoints`.
@@ -12,7 +14,7 @@
 
 **Prompt limitation:** Positive prompts are supported for all listed families. **Negative prompts and CFG adjustments apply only to SD/SDXL**; FLUX and Z-Image use architecture-specific conditioning/sampling and ignore those two inputs. Low / Medium / High vary by model architecture and do **not** magically upgrade model quality. The ComfyUI GPU instance must remain running. Some models may exceed the available VRAM or require newer ComfyUI core nodes.
 
-**Verification:** 139 automated tests and 7 subtests passed in a local virtual GUI environment, including a fake local Z-Image generation. The user's real Windows machine previously confirmed SDXL generation in beta.1; **live Z-Image/FLUX GPU execution and this beta.3 Windows release still need testing**. This is not a compiled `.exe` or general redistribution audit.
+**Verification:** The updated source package passed 153 automated tests and 7 subtests locally, including a simulated removal of a selected model without submitting a fallback GPU job. The owner confirmed SDXL generation on Windows; live Z-Image/FLUX GPU execution and this beta.4 Windows release still need testing. This is not a compiled `.exe` or a general redistribution audit.
 
 
 **Beta 2 carried forward:** The Art Studio now offers **Low / Medium / High** size-and-steps presets (same checkpoint, more steps do not guarantee better art). In **AI image model setup**, click **Check Model Status** to see whether your running ComfyUI already has SDXL, even if Campaign Forge itself has never recorded a download. Upgrading Campaign Forge does not remove or reinstall existing ComfyUI checkpoints.
