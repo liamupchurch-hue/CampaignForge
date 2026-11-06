@@ -1,10 +1,13 @@
 # Changelog
 
-## Unreleased — image setup guidance improvement
+## Unreleased — SDXL workflow preset and ComfyUI integration foundations
 
 - Add **Find models folder** and **Where is it in Comfy Desktop?** controls for ComfyUI checkpoint selection. Recognizes common newer/older Windows shared-model folders, with manual selection for custom locations.
 - Clarify that the selected path is a `checkpoints` **folder**, not an individual model file, and that Campaign Forge's image generation integration with ComfyUI is not yet implemented.
-- Regression tests for model-folder discovery added; 90 tests and 7 subtests passed locally. Actual upgraded Windows UI must still be checked.
+- Added the seven-node, API-format SDXL Base workflow preset from a successful real ComfyUI Desktop test (with a generic example prompt instead of the owner's map prompt). The preset uses only core ComfyUI nodes.
+- Added `comfy_bridge.py` for safe preset customization and opt-in, localhost-only ComfyUI connectivity, checkpoint listing and prompt submission. **Not yet connected to Campaign Forge's UI**; no live API or Windows executable integration test yet.
+- Added adapter regression tests with mocked ComfyUI responses. Initial local source test suite: 102 tests plus 7 subtests passed; newest GitHub CI is still to be verified.
+- Folder discovery instructions and updated dialog still need verification on Windows.
 
 ## v1.0.0 — First GitHub community beta (source package)
 
